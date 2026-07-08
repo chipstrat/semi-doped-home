@@ -11,7 +11,7 @@ const year = new Date().getFullYear();
   <!-- Brand hero: the black block IS the front door here -->
   <header class="hero">
     <div class="wrap inner">
-      <WaferMark size={96} />
+      <WaferMark size={64} />
       <h1 class="wm"><span class="s">SEMI </span><span class="d">DOPED</span></h1>
       <p class="tagline">The business and technology of semiconductors.<br />Alpha for engineers and investors alike.</p>
       <div class="ctas">
@@ -26,6 +26,30 @@ const year = new Date().getFullYear();
       </div>
     </div>
   </header>
+
+  <!-- Hosts -->
+  <section class="hosts">
+    <div class="wrap">
+      <h2>Two engineers, one industry</h2>
+      <p class="hosts-tagline">The world&rsquo;s most interesting industry &middot; and its most interesting people.</p>
+      <div class="hostgrid">
+        <div class="host">
+          <img class="setphoto" src="/hosts/austin-set.jpg" alt="Austin Lyons on the Semi Doped set" width="1200" height="656" loading="lazy" />
+          <div class="hostmeta">
+            <span class="creds">MSEE + MBA</span>
+            <a class="affil" href="https://www.chipstrat.com/" rel="noopener">Chipstrat →</a>
+          </div>
+        </div>
+        <div class="host">
+          <img class="setphoto" src="/hosts/vik-set.jpg" alt="Vikram Sekar on the Semi Doped set" width="1200" height="650" loading="lazy" />
+          <div class="hostmeta">
+            <span class="creds">PhD EE</span>
+            <a class="affil" href="https://www.viksnewsletter.com/" rel="noopener">Vik&rsquo;s Newsletter →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- The two properties -->
   <section class="props">
@@ -73,30 +97,6 @@ const year = new Date().getFullYear();
     </div>
   </section>
 
-  <!-- Hosts -->
-  <section class="hosts">
-    <div class="wrap">
-      <h2>Two engineers, one industry</h2>
-      <p class="hosts-tagline">The world&rsquo;s most interesting industry &middot; and its most interesting people.</p>
-      <div class="hostgrid">
-        <div class="host">
-          <img class="setphoto" src="/hosts/austin-set.jpg" alt="Austin Lyons on the Semi Doped set" width="1200" height="656" loading="lazy" />
-          <div class="hostmeta">
-            <span class="creds">MSEE + MBA</span>
-            <a class="affil" href="https://www.chipstrat.com/" rel="noopener">Chipstrat →</a>
-          </div>
-        </div>
-        <div class="host">
-          <img class="setphoto" src="/hosts/vik-set.jpg" alt="Vikram Sekar on the Semi Doped set" width="1200" height="650" loading="lazy" />
-          <div class="hostmeta">
-            <span class="creds">PhD EE</span>
-            <a class="affil" href="https://www.viksnewsletter.com/" rel="noopener">Vik&rsquo;s Newsletter →</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <footer>
     <div class="wrap foot">
       <span class="mono-meta links">
@@ -132,23 +132,23 @@ const year = new Date().getFullYear();
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding-top: 88px;
-    padding-bottom: 72px;
-    gap: var(--sp-lg);
+    padding-top: 48px;
+    padding-bottom: 44px;
+    gap: var(--sp-md);
   }
   .wm {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: clamp(40px, 7vw, 64px);
+    font-size: clamp(30px, 4.6vw, 42px);
     letter-spacing: 0.12em;
     line-height: 1;
   }
   .wm .s { color: #fff; }
   .wm .d { color: var(--accent); }
   .tagline {
-    font-size: clamp(17px, 2.2vw, 20px);
+    font-size: clamp(15.5px, 1.9vw, 17px);
     color: var(--on-black-muted);
-    line-height: 1.55;
+    line-height: 1.5;
   }
   .ctas { display: flex; gap: var(--sp-md); flex-wrap: wrap; justify-content: center; }
   .hero-outline {
@@ -255,7 +255,7 @@ const year = new Date().getFullYear();
   .wl-line b { color: var(--accent); font-weight: 600; }
 
   /* Hosts */
-  .hosts { padding: var(--sp-2xl) 0 var(--sp-3xl); }
+  .hosts { padding: var(--sp-2xl) 0 var(--sp-md); }
   .hosts h2 { font-size: 26px; margin-bottom: var(--sp-sm); }
   .hosts-tagline {
     font-family: var(--font-mono);
