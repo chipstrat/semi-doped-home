@@ -46,8 +46,11 @@ function text(v: unknown): string {
   return String(v);
 }
 
+const BROWSER_UA =
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36';
+
 async function fetchItems(url: string): Promise<any[]> {
-  const res = await fetch(url, { headers: { 'user-agent': 'semi-doped-home/1.0' } });
+  const res = await fetch(url, { headers: { 'user-agent': BROWSER_UA, accept: 'application/rss+xml,application/xml,*/*' } });
   if (!res.ok) throw new Error(`Feed fetch failed (${url}): ${res.status}`);
   const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: '@_' });
   const doc = parser.parse(await res.text());
@@ -70,10 +73,23 @@ export async function getLatestEpisode(): Promise<FeedItem> {
 }
 
 export async function getLatestDaily(count = 3): Promise<FeedItem[]> {
-  const items = await fetchItems(DAILY_FEED);
-  return items.slice(0, count).map((item: any) => ({
-    title: text(item.title),
-    link: text(item.link),
-    date: new Date(text(item.pubDate)),
-  }));
+  try {
+    const items = await fetchItems(DAILY_FEED);
+    return items.slice(0, count).map((item: any) => ({
+      title: text(item.title),
+      link: text(item.link),
+      date: new Date(text(item.pubDate)),
+    }));
+  } catch (err) {
+    // Substack intermittently 403s datacenter IPs (e.g. GitHub Actions
+    // runners). Fall back to the committed snapshot so the build never
+    // fails — the card shows the latest-known issues instead of nothing.
+    console.warn(`Daily feed unavailable, using fallback: ${err}`);
+    const fallback = (await import('../data/daily-fallback.json')).default as {
+      title: string;
+      link: string;
+      date: string;
+    }[];
+    return fallback.slice(0, count).map((p) => ({ ...p, date: new Date(p.date) }));
+  }
 }
