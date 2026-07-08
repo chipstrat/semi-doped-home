@@ -4,7 +4,7 @@ import WaferMark from '../components/WaferMark.astro';
 import { getLatestEpisodes, getLatestDaily, formatDate, formatDuration, LINKS } from '../lib/feeds';
 import { QUOTES } from '../data/stats';
 
-const [episodes, daily] = await Promise.all([getLatestEpisodes(2), getLatestDaily(3)]);
+const [episodes, daily] = await Promise.all([getLatestEpisodes(3), getLatestDaily(3)]);
 const year = new Date().getFullYear();
 ---
 <Base title="Semi Doped — Semiconductors, Decoded Daily">
