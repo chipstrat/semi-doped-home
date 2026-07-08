@@ -17,19 +17,19 @@ const PERKS = [
 // a partner's brand sits beside.
 const EXAMPLES = [
   {
-    company: 'WITH MICROSOFT',
-    title: "An Interview with Microsoft's Saurabh Dighe about Maia 200",
-    link: 'https://semidoped.fm/episodes/an-interview-with-microsoft-s-saurabh-dighe-about-maia-200/',
+    company: 'THE DEEP DIVE',
+    title: 'A Masterclass on Lithography',
+    videoId: 'WWbEfDilXuM',
   },
   {
-    company: 'WITH WEKA',
-    title: 'A New Era of Context Memory with Val Bercovici from WEKA',
-    link: 'https://semidoped.fm/episodes/a-new-era-of-context-memory-with-val-bercovici-from-weka/',
+    company: 'NEWS & ANALYSIS',
+    title: "Qualcomm's HBC Memory, Alphawave, Modular, and More",
+    videoId: 'gbxIFOtYPrE',
   },
   {
-    company: 'WITH ORNN',
-    title: 'The Future of Financing AI Infrastructure with Wayne Nelms, CTO of Ornn',
-    link: 'https://semidoped.fm/episodes/the-future-of-financing-ai-infrastructure-with-wayne-nelms-cto-of-ornn/',
+    company: 'WITH META',
+    title: 'Meta VP Matt Steiner on Ads Infra, GPUs, MTIA, and LLM-Written Kernels',
+    videoId: '5dWovJ4YHTY',
   },
 ];
 ---
@@ -81,10 +81,16 @@ const EXAMPLES = [
       <p class="ex-lead">Your brand sits beside episodes like these.</p>
       <div class="exgrid">
         {EXAMPLES.map((ex) => (
-          <a class="excard" href={ex.link} rel="noopener">
-            <span class="ex-co">{ex.company}</span>
-            <span class="ex-title">{ex.title}</span>
-            <span class="ex-go">Listen →</span>
+          <a class="excard" href={`https://www.youtube.com/watch?v=${ex.videoId}`} rel="noopener">
+            <span class="ex-thumb">
+              <img src={`https://i.ytimg.com/vi/${ex.videoId}/hqdefault.jpg`} alt={ex.title} loading="lazy" width="480" height="360" />
+              <span class="ex-play" aria-hidden="true"></span>
+            </span>
+            <span class="ex-body">
+              <span class="ex-co">{ex.company}</span>
+              <span class="ex-title">{ex.title}</span>
+              <span class="ex-go">Watch →</span>
+            </span>
           </a>
         ))}
       </div>
@@ -265,40 +271,57 @@ const EXAMPLES = [
   .excard {
     display: flex;
     flex-direction: column;
-    gap: var(--sp-sm);
     background: #070707;
     border-radius: var(--radius-md);
-    padding: var(--sp-xl) var(--sp-lg);
     text-decoration: none;
-    position: relative;
     overflow: hidden;
     transition: transform 0.2s ease;
   }
-  .excard::before {
+  .excard:hover { transform: translateY(-2px); }
+  .ex-thumb { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; }
+  .ex-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ex-play {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.94;
+  }
+  .ex-play::after {
     content: '';
     position: absolute;
-    inset: 0;
-    background: radial-gradient(70% 70% at 50% 0%, rgba(233, 104, 34, 0.22), transparent 65%);
-    pointer-events: none;
+    left: 55%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-left: 15px solid #fff;
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
   }
-  .excard:hover { transform: translateY(-2px); }
+  .ex-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-sm);
+    padding: var(--sp-lg);
+    flex: 1;
+  }
   .ex-co {
-    position: relative;
     font-family: var(--font-mono);
     font-size: 11px;
     letter-spacing: 0.14em;
     color: var(--accent);
   }
   .ex-title {
-    position: relative;
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: 17.5px;
+    font-size: 17px;
     line-height: 1.4;
     color: #fff;
   }
   .ex-go {
-    position: relative;
     margin-top: auto;
     padding-top: var(--sp-md);
     font-family: var(--font-display);
