@@ -55,7 +55,15 @@ const year = new Date().getFullYear();
     <div class="wrap propgrid">
       <a class="prop" href={LINKS.podcast}>
         <div class="kicker">THE PODCAST · WEEKLY</div>
-        <h2>Semi Doped</h2>
+        <h2 class="prop-title">
+          <svg class="prop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <rect x="9" y="2.5" width="6" height="11" rx="3" />
+            <path d="M5 11a7 7 0 0 0 14 0" />
+            <line x1="12" y1="18" x2="12" y2="21.5" />
+            <line x1="8.5" y1="21.5" x2="15.5" y2="21.5" />
+          </svg>
+          Semi Doped
+        </h2>
         <div class="latest">
           {episodes.map((ep) => (
             <div class="daily-row">
@@ -68,7 +76,13 @@ const year = new Date().getFullYear();
       </a>
       <a class="prop" href={LINKS.daily}>
         <div class="kicker">THE NEWSLETTER · EVERY TRADING DAY</div>
-        <h2>Semi Doped Daily</h2>
+        <h2 class="prop-title">
+          <svg class="prop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2.5" y="5" width="19" height="14" rx="2.5" />
+            <path d="M3.5 6.5 12 13l8.5-6.5" />
+          </svg>
+          Semi Doped Daily
+        </h2>
         <p class="desc">The daily brew of semiconductors. The news that matters and what it means, in your inbox every trading day. Free.</p>
         <div class="latest">
           {daily.map((post) => (
@@ -194,6 +208,8 @@ const year = new Date().getFullYear();
   .prop:hover { border-color: var(--accent); }
   .prop .kicker { font-size: 11px; }
   .prop h2 { font-size: 26px; }
+  .prop-title { display: flex; align-items: center; gap: 12px; }
+  .prop-icon { width: 26px; height: 26px; color: var(--accent); flex: none; }
   .desc { font-size: 16px; color: var(--muted); }
   .latest {
     border-top: 1px solid var(--hairline);
