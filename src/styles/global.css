@@ -1,0 +1,100 @@
+/* Semi Doped design tokens — see DESIGN.md before changing anything here. */
+:root {
+  /* Brand */
+  --yellow: #F2C300;
+  --orange-mid: #F0951C;
+  --accent: #E96822;
+  --brick: #D94A1E;
+  --black: #070707;
+
+  /* Canvas (cream) */
+  --bg: #F5F1E8;
+  --surface: #FDFBF5;
+  --ink: #17130D;
+  --muted: #6E6557;
+  --hairline: #D8CFBD;
+
+  /* On-black */
+  --on-black: #F5F1E8;
+  --on-black-muted: #8a8a90;
+
+  /* Type */
+  --font-display: "Oxanium", sans-serif;
+  --font-body: "IBM Plex Sans", -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  /* Spacing (8px base) */
+  --sp-xs: 4px; --sp-sm: 8px; --sp-md: 16px; --sp-lg: 24px;
+  --sp-xl: 32px; --sp-2xl: 48px; --sp-3xl: 64px;
+
+  --radius-sm: 10px;
+  --radius-md: 12px;
+
+  --max-width: 1160px;
+
+  --glow-warm: radial-gradient(55% 130% at 78% 50%, rgba(233, 104, 34, 0.22), transparent 62%);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--accent); }
+
+.wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.015em;
+  line-height: 1.1;
+}
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.kicker b { color: var(--accent); font-weight: 500; }
+
+.mono-meta {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  border-radius: 9999px;
+  padding: 8px 20px;
+  text-decoration: none;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  cursor: pointer;
+}
+.btn-solid { background: var(--accent); color: #fff; border: 1.5px solid var(--accent); }
+.btn-solid:hover { background: var(--brick); border-color: var(--brick); }
+.btn-outline { color: var(--ink); border: 1.5px solid var(--ink); background: transparent; }
+.btn-outline:hover { color: var(--accent); border-color: var(--accent); }

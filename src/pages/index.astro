@@ -1,0 +1,225 @@
+---
+import Base from '../layouts/Base.astro';
+import WaferMark from '../components/WaferMark.astro';
+import { getLatestEpisode, getLatestDaily, formatDate, formatDuration, LINKS } from '../lib/feeds';
+
+const [latestEp, daily] = await Promise.all([getLatestEpisode(), getLatestDaily(3)]);
+const year = new Date().getFullYear();
+---
+<Base title="Semi Doped — Semiconductors, Decoded Daily">
+  <!-- Brand hero: the black block IS the front door here -->
+  <header class="hero">
+    <div class="wrap inner">
+      <WaferMark size={96} />
+      <h1 class="wm"><span class="s">SEMI </span><span class="d">DOPED</span></h1>
+      <p class="tagline">The business and technology of semiconductors.<br />Alpha for engineers and investors alike.</p>
+      <div class="ctas">
+        <a class="btn btn-solid" href={LINKS.podcast}>Listen to the Podcast</a>
+        <a class="btn hero-outline" href={LINKS.daily}>Read the Daily</a>
+      </div>
+      <div class="platforms mono-line">
+        <a href={LINKS.youtube} rel="noopener">YOUTUBE</a> /
+        <a href={LINKS.apple} rel="noopener">APPLE</a> /
+        <a href={LINKS.spotify} rel="noopener">SPOTIFY</a> /
+        <a href={LINKS.x} rel="noopener">X</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- The two properties -->
+  <section class="props">
+    <div class="wrap propgrid">
+      <a class="prop" href={LINKS.podcast}>
+        <div class="kicker">THE PODCAST · WEEKLY</div>
+        <h2>Semi Doped</h2>
+        <p class="desc">Austin and Vik go deep on one story shaping the industry — foundry economics, AI infrastructure, memory cycles, and the companies behind them.</p>
+        <div class="latest">
+          <div class="mono-meta">LATEST · {formatDate(latestEp.date)} · {formatDuration(latestEp.duration ?? 0)}</div>
+          <div class="item-title">{latestEp.title}</div>
+        </div>
+        <span class="go">semidoped.fm →</span>
+      </a>
+      <a class="prop" href={LINKS.daily}>
+        <div class="kicker">THE NEWSLETTER · EVERY MARKET MORNING</div>
+        <h2>Semi Doped Daily</h2>
+        <p class="desc">The daily brew of semiconductors. The news that matters and what it means, in your inbox before the market opens. Free.</p>
+        <div class="latest">
+          {daily.map((post) => (
+            <div class="daily-row">
+              <span class="mono-meta">{formatDate(post.date)}</span>
+              <span class="item-title sm">{post.title}</span>
+            </div>
+          ))}
+        </div>
+        <span class="go">daily.semidoped.com →</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Hosts -->
+  <section class="hosts">
+    <div class="wrap">
+      <h2>Two engineers, one industry</h2>
+      <div class="hostgrid">
+        <div class="host">
+          <img class="avatar" src="/hosts/austin.jpg" alt="Austin Lyons" width="72" height="72" loading="lazy" />
+          <div>
+            <div class="name">Austin Lyons</div>
+            <div class="role">Analyst &amp; founder, <a href="https://www.chipstrat.com/" rel="noopener">Chipstrat</a></div>
+          </div>
+        </div>
+        <div class="host">
+          <img class="avatar" src="/hosts/vik.jpg" alt="Vik Sekar" width="72" height="72" loading="lazy" />
+          <div>
+            <div class="name">Vik Sekar</div>
+            <div class="role">RF engineer &amp; author, <a href="https://www.viksnewsletter.com/" rel="noopener">Vik&rsquo;s Newsletter</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap foot">
+      <span class="mono-meta links">
+        <a href={LINKS.podcast}>PODCAST</a> /
+        <a href={LINKS.daily}>DAILY</a> /
+        <a href={LINKS.youtube} rel="noopener">YOUTUBE</a> /
+        <a href={LINKS.x} rel="noopener">X</a>
+      </span>
+      <span class="mono-meta">© {year} SEMI DOPED LLC</span>
+    </div>
+  </footer>
+</Base>
+
+<style>
+  /* Hero */
+  .hero {
+    background: var(--black);
+    color: var(--on-black);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(60% 90% at 50% 10%, rgba(233, 104, 34, 0.22), transparent 65%);
+    pointer-events: none;
+  }
+  .hero .inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-top: 88px;
+    padding-bottom: 72px;
+    gap: var(--sp-lg);
+  }
+  .wm {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(40px, 7vw, 64px);
+    letter-spacing: 0.12em;
+    line-height: 1;
+  }
+  .wm .s { color: #fff; }
+  .wm .d { color: var(--accent); }
+  .tagline {
+    font-size: clamp(17px, 2.2vw, 20px);
+    color: var(--on-black-muted);
+    line-height: 1.55;
+  }
+  .ctas { display: flex; gap: var(--sp-md); flex-wrap: wrap; justify-content: center; }
+  .hero-outline {
+    color: #fff;
+    border: 1.5px solid #fff;
+    background: transparent;
+  }
+  .hero-outline:hover { color: var(--accent); border-color: var(--accent); }
+  .mono-line {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--on-black-muted);
+  }
+  .mono-line a { color: var(--on-black); text-decoration: none; transition: color 0.2s ease; }
+  .mono-line a:hover { color: var(--accent); }
+
+  /* Property cards */
+  .props { border-bottom: 1px solid var(--hairline); }
+  .propgrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-xl);
+    padding-top: var(--sp-3xl);
+    padding-bottom: var(--sp-3xl);
+  }
+  @media (max-width: 820px) { .propgrid { grid-template-columns: 1fr; } }
+  .prop {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-md);
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    padding: var(--sp-xl);
+    text-decoration: none;
+    color: var(--ink);
+    transition: border-color 0.2s ease;
+  }
+  .prop:hover { border-color: var(--accent); }
+  .prop .kicker { font-size: 11px; }
+  .prop h2 { font-size: 26px; }
+  .desc { font-size: 16px; color: var(--muted); }
+  .latest {
+    border-top: 1px solid var(--hairline);
+    padding-top: var(--sp-md);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .item-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 1.35;
+    margin-top: 4px;
+  }
+  .item-title.sm { font-size: 15.5px; margin-top: 0; }
+  .daily-row { display: flex; flex-direction: column; gap: 2px; }
+  .go {
+    margin-top: auto;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.03em;
+    color: var(--accent);
+  }
+
+  /* Hosts */
+  .hosts { padding: var(--sp-2xl) 0 var(--sp-3xl); }
+  .hosts h2 { font-size: 26px; margin-bottom: var(--sp-lg); }
+  .hostgrid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-xl); }
+  @media (max-width: 700px) { .hostgrid { grid-template-columns: 1fr; } }
+  .host { display: flex; gap: 18px; align-items: center; }
+  .avatar { width: 72px; height: 72px; border-radius: 50%; flex: none; object-fit: cover; }
+  .name { font-family: var(--font-display); font-weight: 700; font-size: 17px; letter-spacing: 0.02em; }
+  .role { font-size: 14.5px; color: var(--muted); }
+  .role a { color: var(--muted); }
+  .role a:hover { color: var(--accent); }
+
+  footer { border-top: 1px solid var(--hairline); }
+  .foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--sp-md);
+    padding-top: var(--sp-lg);
+    padding-bottom: var(--sp-lg);
+  }
+  .links a { color: var(--ink); text-decoration: none; transition: color 0.2s ease; }
+  .links a:hover { color: var(--accent); }
+</style>
