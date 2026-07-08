@@ -1,0 +1,31 @@
+---
+// The Semi Doped wafer mark: 4x4 dot lattice, corners removed, one open-ring
+// "doped" atom at (60,60). Canonical geometry — see DESIGN.md Brand Assets.
+interface Props {
+  size?: number;
+  mode?: 'color' | 'white';
+}
+const { size = 34, mode = 'color' } = Astro.props;
+
+const cols = [20, 40, 60, 80];
+const rows = [20, 40, 60, 80];
+const colColor = ['#F2C300', '#F0951C', '#E96822', '#D94A1E'];
+const corners = new Set(['20,20', '80,20', '20,80', '80,80']);
+const solid = mode === 'white' ? '#ffffff' : null;
+
+const dots: { x: number; y: number; fill: string; doped: boolean }[] = [];
+for (const y of rows) {
+  cols.forEach((x, ci) => {
+    if (corners.has(`${x},${y}`)) return;
+    const doped = x === 60 && y === 60;
+    dots.push({ x, y, fill: solid ?? (doped ? '#E96822' : colColor[ci]), doped });
+  });
+}
+---
+<svg width={size} height={size} viewBox="0 0 100 100" aria-hidden="true">
+  {dots.map((d) =>
+    d.doped
+      ? <circle cx={d.x} cy={d.y} r="6.5" fill="none" stroke={d.fill} stroke-width="3" />
+      : <circle cx={d.x} cy={d.y} r="7.5" fill={d.fill} />
+  )}
+</svg>

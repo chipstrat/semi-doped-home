@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import WaferMark from '../components/WaferMark.astro';
+---
+<Base title="Not found — Semi Doped">
+  <!-- The Substack lived at www.semidoped.com before moving to
+       daily.semidoped.com. Old post/archive links land here as 404s,
+       so forward those paths to the Daily. -->
+  <script is:inline>
+    var p = window.location.pathname;
+    if (/^\/(p|s|archive|subscribe|embed|about)(\/|$)/.test(p)) {
+      window.location.replace('https://daily.semidoped.com' + p + window.location.search);
+    }
+  </script>
+  <main class="nf">
+    <WaferMark size={72} />
+    <h1>Page not found</h1>
+    <p>If you followed a newsletter link, it now lives at
+      <a href="https://daily.semidoped.com">daily.semidoped.com</a>.</p>
+    <a class="btn btn-solid" href="/">Back home</a>
+  </main>
+</Base>
+
+<style>
+  .nf {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: var(--sp-lg);
+    padding: var(--sp-3xl) 28px;
+  }
+  h1 { font-size: 32px; }
+  p { color: var(--muted); max-width: 46ch; }
+</style>
