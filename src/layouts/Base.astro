@@ -4,10 +4,12 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description?: string;
+  noindex?: boolean;
 }
 const {
   title,
   description = 'The business and technology of semiconductors. Alpha for engineers and investors alike.',
+  noindex = false,
 } = Astro.props;
 ---
 <!doctype html>
@@ -17,6 +19,7 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
