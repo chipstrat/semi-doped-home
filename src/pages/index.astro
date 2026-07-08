@@ -1,10 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
 import WaferMark from '../components/WaferMark.astro';
-import { getLatestEpisode, getLatestDaily, formatDate, formatDuration, LINKS } from '../lib/feeds';
+import { getLatestEpisodes, getLatestDaily, formatDate, formatDuration, LINKS } from '../lib/feeds';
 import { QUOTES } from '../data/stats';
 
-const [latestEp, daily] = await Promise.all([getLatestEpisode(), getLatestDaily(3)]);
+const [episodes, daily] = await Promise.all([getLatestEpisodes(2), getLatestDaily(3)]);
 const year = new Date().getFullYear();
 ---
 <Base title="Semi Doped — Semiconductors, Decoded Daily">
@@ -33,17 +33,17 @@ const year = new Date().getFullYear();
       <h2>The engineer&rsquo;s engineer and the chip strategist</h2>
       <div class="hostgrid">
         <div class="host">
-          <img class="setphoto" src="/hosts/austin-set.jpg" alt="Austin Lyons on the Semi Doped set" width="1200" height="656" loading="lazy" />
-          <div class="hostmeta">
-            <span class="creds">MSEE + MBA</span>
-            <a class="affil" href="https://www.chipstrat.com/" rel="noopener">Chipstrat →</a>
-          </div>
-        </div>
-        <div class="host">
           <img class="setphoto" src="/hosts/vik-set.jpg" alt="Vikram Sekar on the Semi Doped set" width="1200" height="650" loading="lazy" />
           <div class="hostmeta">
             <span class="creds">PhD EE</span>
             <a class="affil" href="https://www.viksnewsletter.com/" rel="noopener">Vik&rsquo;s Newsletter →</a>
+          </div>
+        </div>
+        <div class="host">
+          <img class="setphoto" src="/hosts/austin-set.jpg" alt="Austin Lyons on the Semi Doped set" width="1200" height="656" loading="lazy" />
+          <div class="hostmeta">
+            <span class="creds">MSEE + MBA</span>
+            <a class="affil" href="https://www.chipstrat.com/" rel="noopener">Chipstrat →</a>
           </div>
         </div>
       </div>
@@ -56,10 +56,13 @@ const year = new Date().getFullYear();
       <a class="prop" href={LINKS.podcast}>
         <div class="kicker">THE PODCAST · WEEKLY</div>
         <h2>Semi Doped</h2>
-        <p class="desc">Austin and Vik go deep on one story shaping the industry. Foundry economics, AI infrastructure, memory cycles, and the companies behind them.</p>
         <div class="latest">
-          <div class="mono-meta">LATEST · {formatDate(latestEp.date)} · {formatDuration(latestEp.duration ?? 0)}</div>
-          <div class="item-title">{latestEp.title}</div>
+          {episodes.map((ep) => (
+            <div class="daily-row">
+              <span class="mono-meta">{formatDate(ep.date)} · {formatDuration(ep.duration ?? 0)}</span>
+              <span class="item-title">{ep.title}</span>
+            </div>
+          ))}
         </div>
         <span class="go">semidoped.fm →</span>
       </a>
