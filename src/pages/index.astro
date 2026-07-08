@@ -65,7 +65,10 @@ const year = new Date().getFullYear();
           <p>&ldquo;{QUOTES[0].text}&rdquo;</p>
           <cite>{QUOTES[0].who}</cite>
         </blockquote>
-        <p class="who-listens">Listeners at every major chipmaker, the leading AI labs, and 60+ investment firms — across 110 countries. <a href="/partners/">Partner with us →</a></p>
+        <div class="who-listens">
+          <p class="wl-line">Listeners at <b>every major chipmaker</b>, the <b>leading AI labs</b>, and <b>60+ investment firms</b>, across <b>110 countries</b>.</p>
+          <a class="btn btn-outline" href="/partners/">Partner with us</a>
+        </div>
       </div>
     </div>
   </section>
@@ -77,17 +80,19 @@ const year = new Date().getFullYear();
       <p class="hosts-tagline">The world&rsquo;s most interesting industry &middot; and its most interesting people.</p>
       <div class="hostgrid">
         <div class="host">
-          <img class="avatar" src="/hosts/austin.jpg" alt="Austin Lyons" width="72" height="72" loading="lazy" />
+          <img class="avatar" src="/hosts/austin.jpg" alt="Austin Lyons" width="96" height="96" loading="lazy" />
           <div>
             <div class="name">Austin Lyons</div>
-            <div class="role">Analyst &amp; founder, <a href="https://www.chipstrat.com/" rel="noopener">Chipstrat</a></div>
+            <div class="creds">MSEE + MBA</div>
+            <a class="affil" href="https://www.chipstrat.com/" rel="noopener">Chipstrat →</a>
           </div>
         </div>
         <div class="host">
-          <img class="avatar" src="/hosts/vik.jpg" alt="Vik Sekar" width="72" height="72" loading="lazy" />
+          <img class="avatar" src="/hosts/vik.jpg" alt="Vikram Sekar" width="96" height="96" loading="lazy" />
           <div>
-            <div class="name">Vik Sekar</div>
-            <div class="role">RF engineer &amp; author, <a href="https://www.viksnewsletter.com/" rel="noopener">Vik&rsquo;s Newsletter</a></div>
+            <div class="name">Vikram Sekar</div>
+            <div class="creds">PhD EE</div>
+            <a class="affil" href="https://www.viksnewsletter.com/" rel="noopener">Vik&rsquo;s Newsletter →</a>
           </div>
         </div>
       </div>
@@ -241,8 +246,15 @@ const year = new Date().getFullYear();
     text-transform: uppercase;
     color: var(--muted);
   }
-  .who-listens { color: var(--muted); font-size: 16.5px; max-width: 40ch; }
-  .who-listens a { color: var(--accent); font-weight: 600; text-decoration: none; font-family: var(--font-display); letter-spacing: 0.02em; }
+  .who-listens { display: flex; flex-direction: column; gap: var(--sp-lg); align-items: flex-start; }
+  .wl-line {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(19px, 2.4vw, 24px);
+    line-height: 1.45;
+    max-width: 26ch;
+  }
+  .wl-line b { color: var(--accent); font-weight: 600; }
 
   /* Hosts */
   .hosts { padding: var(--sp-2xl) 0 var(--sp-3xl); }
@@ -257,12 +269,34 @@ const year = new Date().getFullYear();
   }
   .hostgrid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-xl); }
   @media (max-width: 700px) { .hostgrid { grid-template-columns: 1fr; } }
-  .host { display: flex; gap: 18px; align-items: center; }
-  .avatar { width: 72px; height: 72px; border-radius: 50%; flex: none; object-fit: cover; }
-  .name { font-family: var(--font-display); font-weight: 700; font-size: 17px; letter-spacing: 0.02em; }
-  .role { font-size: 14.5px; color: var(--muted); }
-  .role a { color: var(--muted); }
-  .role a:hover { color: var(--accent); }
+  .host {
+    display: flex;
+    gap: var(--sp-lg);
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    padding: var(--sp-lg) var(--sp-xl);
+  }
+  .avatar { width: 96px; height: 96px; border-radius: 50%; flex: none; object-fit: cover; }
+  .name { font-family: var(--font-display); font-weight: 700; font-size: 20px; letter-spacing: 0.02em; }
+  .creds {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 4px 0 8px;
+  }
+  .affil {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 14.5px;
+    letter-spacing: 0.03em;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .affil:hover { color: var(--brick); }
 
   footer { border-top: 1px solid var(--hairline); }
   .foot {
