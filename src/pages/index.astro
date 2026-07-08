@@ -33,7 +33,7 @@ const year = new Date().getFullYear();
       <a class="prop" href={LINKS.podcast}>
         <div class="kicker">THE PODCAST · WEEKLY</div>
         <h2>Semi Doped</h2>
-        <p class="desc">Austin and Vik go deep on one story shaping the industry — foundry economics, AI infrastructure, memory cycles, and the companies behind them.</p>
+        <p class="desc">Austin and Vik go deep on one story shaping the industry. Foundry economics, AI infrastructure, memory cycles, and the companies behind them.</p>
         <div class="latest">
           <div class="mono-meta">LATEST · {formatDate(latestEp.date)} · {formatDuration(latestEp.duration ?? 0)}</div>
           <div class="item-title">{latestEp.title}</div>
@@ -80,18 +80,16 @@ const year = new Date().getFullYear();
       <p class="hosts-tagline">The world&rsquo;s most interesting industry &middot; and its most interesting people.</p>
       <div class="hostgrid">
         <div class="host">
-          <img class="avatar" src="/hosts/austin.jpg" alt="Austin Lyons" width="96" height="96" loading="lazy" />
-          <div>
-            <div class="name">Austin Lyons</div>
-            <div class="creds">MSEE + MBA</div>
+          <img class="setphoto" src="/hosts/austin-set.jpg" alt="Austin Lyons on the Semi Doped set" width="1200" height="656" loading="lazy" />
+          <div class="hostmeta">
+            <span class="creds">MSEE + MBA</span>
             <a class="affil" href="https://www.chipstrat.com/" rel="noopener">Chipstrat →</a>
           </div>
         </div>
         <div class="host">
-          <img class="avatar" src="/hosts/vik.jpg" alt="Vikram Sekar" width="96" height="96" loading="lazy" />
-          <div>
-            <div class="name">Vikram Sekar</div>
-            <div class="creds">PhD EE</div>
+          <img class="setphoto" src="/hosts/vik-set.jpg" alt="Vikram Sekar on the Semi Doped set" width="1200" height="650" loading="lazy" />
+          <div class="hostmeta">
+            <span class="creds">PhD EE</span>
             <a class="affil" href="https://www.viksnewsletter.com/" rel="noopener">Vik&rsquo;s Newsletter →</a>
           </div>
         </div>
@@ -270,23 +268,25 @@ const year = new Date().getFullYear();
   .hostgrid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-xl); }
   @media (max-width: 700px) { .hostgrid { grid-template-columns: 1fr; } }
   .host {
-    display: flex;
-    gap: var(--sp-lg);
-    align-items: center;
     background: var(--surface);
     border: 1px solid var(--hairline);
     border-radius: var(--radius-md);
-    padding: var(--sp-lg) var(--sp-xl);
+    overflow: hidden;
   }
-  .avatar { width: 96px; height: 96px; border-radius: 50%; flex: none; object-fit: cover; }
-  .name { font-family: var(--font-display); font-weight: 700; font-size: 20px; letter-spacing: 0.02em; }
+  .setphoto { display: block; width: 100%; height: auto; }
+  .hostmeta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--sp-md);
+    padding: var(--sp-md) var(--sp-lg);
+  }
   .creds {
     font-family: var(--font-mono);
     font-size: 12px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--muted);
-    margin: 4px 0 8px;
   }
   .affil {
     font-family: var(--font-display);
