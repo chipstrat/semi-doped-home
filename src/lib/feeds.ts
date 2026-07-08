@@ -58,18 +58,19 @@ async function fetchItems(url: string): Promise<any[]> {
   return Array.isArray(items) ? items : [items];
 }
 
-export async function getLatestEpisode(): Promise<FeedItem> {
+export async function getLatestEpisodes(count = 2): Promise<FeedItem[]> {
   const items = await fetchItems(PODCAST_FEED);
-  const item = items[0];
-  const mp3: string = item.enclosure?.['@_url'] ?? '';
-  const slug = (mp3.split('/').pop() ?? '').replace(/\.mp3$/, '').replace(/^\d+-/, '');
-  return {
-    title: text(item.title),
-    link: `https://semidoped.fm/episodes/${slug}/`,
-    date: new Date(text(item.pubDate)),
-    duration: Number(text(item['itunes:duration'])) || 0,
-    num: items.length,
-  };
+  return items.slice(0, count).map((item: any, i: number) => {
+    const mp3: string = item.enclosure?.['@_url'] ?? '';
+    const slug = (mp3.split('/').pop() ?? '').replace(/\.mp3$/, '').replace(/^\d+-/, '');
+    return {
+      title: text(item.title),
+      link: `https://semidoped.fm/episodes/${slug}/`,
+      date: new Date(text(item.pubDate)),
+      duration: Number(text(item['itunes:duration'])) || 0,
+      num: items.length - i,
+    };
+  });
 }
 
 export async function getLatestDaily(count = 3): Promise<FeedItem[]> {
