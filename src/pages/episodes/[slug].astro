@@ -1,0 +1,89 @@
+---
+import Shell from '../../layouts/Shell.astro';
+import Player from '../../components/Player.astro';
+import Platforms from '../../components/Platforms.astro';
+import EpisodeArt from '../../components/EpisodeArt.astro';
+import YouTubeEmbed from '../../components/YouTubeEmbed.astro';
+import DailySignup from '../../components/DailySignup.astro';
+import { getEpisodes, formatDateLong, formatDuration, epNum, type Episode } from '../../lib/feed';
+
+export async function getStaticPaths() {
+  const episodes = await getEpisodes();
+  return episodes.map((episode) => ({
+    params: { slug: episode.slug },
+    props: { episode },
+  }));
+}
+
+interface Props {
+  episode: Episode;
+}
+const { episode } = Astro.props;
+---
+<Shell title={`${episode.title} — Semi Doped`} description={episode.summary.slice(0, 200)}>
+  <article>
+    <section class="head">
+      <div class="wrap headgrid">
+        <EpisodeArt num={episode.num} size={128} />
+        <div>
+          <div class="kicker">
+            <b>{epNum(episode.num)}</b>&ensp;·&ensp;{formatDateLong(episode.date)}&ensp;·&ensp;{formatDuration(episode.duration)}
+          </div>
+          <h1>{episode.title}</h1>
+        </div>
+      </div>
+      <div class="wrap">
+        {episode.videoId && (
+          <div class="video">
+            <YouTubeEmbed videoId={episode.videoId} title={episode.title} />
+          </div>
+        )}
+        <Player src={episode.mp3} duration={episode.duration} />
+        <Platforms />
+      </div>
+    </section>
+
+    <section class="notes">
+      <div class="wrap">
+        <h2 class="kicker">SHOW NOTES</h2>
+        <div class="prose" set:html={episode.notesHtml} />
+        <a class="back" href="/episodes/">← ALL EPISODES</a>
+      </div>
+    </section>
+  </article>
+  <DailySignup />
+</Shell>
+
+<style>
+  .head { padding: 56px 0 44px; border-bottom: 1px solid var(--hairline); }
+  .headgrid {
+    display: grid;
+    grid-template-columns: 128px 1fr;
+    gap: var(--sp-xl);
+    align-items: center;
+    margin-bottom: var(--sp-xl);
+  }
+  @media (max-width: 640px) {
+    .headgrid { grid-template-columns: 1fr; }
+  }
+  .kicker { margin-bottom: 14px; }
+  h1 { font-size: clamp(26px, 3.6vw, 40px); max-width: 24ch; }
+  .video { max-width: 860px; margin-bottom: var(--sp-lg); }
+  .notes { padding: 44px 0 56px; }
+  .notes .kicker { margin-bottom: 22px; }
+  .prose { max-width: 68ch; }
+  .prose :global(p) { margin-bottom: 1em; }
+  .prose :global(a) { color: var(--accent); }
+  .prose :global(ul), .prose :global(ol) { margin: 0 0 1em 1.2em; }
+  .prose :global(li) { margin-bottom: 0.4em; }
+  .prose :global(b), .prose :global(strong) { font-weight: 600; }
+  .back {
+    display: inline-block;
+    margin-top: var(--sp-xl);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    text-decoration: none;
+  }
+</style>

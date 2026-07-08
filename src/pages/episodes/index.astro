@@ -1,0 +1,24 @@
+---
+import Shell from '../../layouts/Shell.astro';
+import EpisodeRow from '../../components/EpisodeRow.astro';
+import DailySignup from '../../components/DailySignup.astro';
+import { getEpisodes } from '../../lib/feed';
+
+const episodes = await getEpisodes();
+---
+<Shell title="Episodes — Semi Doped">
+  <section class="list">
+    <div class="wrap">
+      <div class="kicker">{episodes.length} EPISODES</div>
+      <h1>Episodes</h1>
+      {episodes.map((ep) => <EpisodeRow episode={ep} />)}
+    </div>
+  </section>
+  <DailySignup />
+</Shell>
+
+<style>
+  .list { padding: 56px 0 48px; }
+  .kicker { margin-bottom: 14px; }
+  h1 { font-size: clamp(30px, 4vw, 44px); margin-bottom: 30px; }
+</style>

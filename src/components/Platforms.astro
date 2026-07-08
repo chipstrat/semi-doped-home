@@ -1,0 +1,36 @@
+---
+import { LINKS } from '../lib/links';
+---
+<div class="platforms" id="listen">
+  <a class="yt btn btn-outline" href={LINKS.youtube} rel="noopener"><span class="tri"></span> WATCH ON YOUTUBE</a>
+  <a href={LINKS.apple} rel="noopener">APPLE PODCASTS</a>
+  <a href={LINKS.spotify} rel="noopener">SPOTIFY</a>
+  <a href={LINKS.amazon} rel="noopener">AMAZON</a>
+  <a href={LINKS.rss}>RSS</a>
+</div>
+
+<style>
+  .platforms {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin-top: 22px;
+    flex-wrap: wrap;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+  }
+  .platforms a:not(.yt) {
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .platforms a:not(.yt):hover { color: var(--accent); }
+  .tri {
+    width: 0;
+    height: 0;
+    border-left: 9px solid var(--accent);
+    border-top: 5.5px solid transparent;
+    border-bottom: 5.5px solid transparent;
+  }
+</style>
