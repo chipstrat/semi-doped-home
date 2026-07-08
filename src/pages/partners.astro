@@ -20,16 +20,19 @@ const EXAMPLES = [
     company: 'THE DEEP DIVE',
     title: 'A Masterclass on Lithography',
     videoId: 'WWbEfDilXuM',
+    link: 'https://semidoped.fm/episodes/lithography-masterclass/',
   },
   {
     company: 'NEWS & ANALYSIS',
     title: "Qualcomm's HBC Memory, Alphawave, Modular, and More",
     videoId: 'gbxIFOtYPrE',
+    link: 'https://semidoped.fm/episodes/qualcomm-s-hbc-memory-alphawave-modular-and-more/',
   },
   {
     company: 'WITH META',
     title: 'Meta VP Matt Steiner on Ads Infra, GPUs, MTIA, and LLM-Written Kernels',
     videoId: '5dWovJ4YHTY',
+    link: 'https://semidoped.fm/episodes/meta-vp-matt-steiner-on-ads-infra-gpus-mtia-and-llm-written-kernels/',
   },
 ];
 ---
@@ -81,7 +84,7 @@ const EXAMPLES = [
       <p class="ex-lead">Your brand sits beside episodes like these.</p>
       <div class="exgrid">
         {EXAMPLES.map((ex) => (
-          <a class="excard" href={`https://www.youtube.com/watch?v=${ex.videoId}`} rel="noopener">
+          <a class="excard" href={ex.link}>
             <span class="ex-thumb">
               <img src={`https://i.ytimg.com/vi/${ex.videoId}/hqdefault.jpg`} alt={ex.title} loading="lazy" width="480" height="360" />
               <span class="ex-play" aria-hidden="true"></span>
