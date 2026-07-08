@@ -13,7 +13,7 @@ const year = new Date().getFullYear();
     <div class="wrap inner">
       <WaferMark size={64} />
       <h1 class="wm"><span class="s">SEMI </span><span class="d">DOPED</span></h1>
-      <p class="tagline">The business and technology of semiconductors.<br />Alpha for engineers and investors alike.</p>
+      <p class="tagline">The world&rsquo;s most interesting industry <span class="dot">&middot;</span> and its most interesting people.</p>
       <div class="ctas">
         <a class="btn btn-solid" href={LINKS.podcast}>Listen to the Podcast</a>
         <a class="btn hero-outline" href={LINKS.daily}>Read the Daily</a>
@@ -31,7 +31,6 @@ const year = new Date().getFullYear();
   <section class="hosts">
     <div class="wrap">
       <h2>Two engineers, one industry</h2>
-      <p class="hosts-tagline">The world&rsquo;s most interesting industry &middot; and its most interesting people.</p>
       <div class="hostgrid">
         <div class="host">
           <img class="setphoto" src="/hosts/austin-set.jpg" alt="Austin Lyons on the Semi Doped set" width="1200" height="656" loading="lazy" />
@@ -150,6 +149,7 @@ const year = new Date().getFullYear();
     color: var(--on-black-muted);
     line-height: 1.5;
   }
+  .tagline .dot { color: var(--accent); }
   .ctas { display: flex; gap: var(--sp-md); flex-wrap: wrap; justify-content: center; }
   .hero-outline {
     color: #fff;
@@ -256,15 +256,7 @@ const year = new Date().getFullYear();
 
   /* Hosts */
   .hosts { padding: var(--sp-2xl) 0 var(--sp-md); }
-  .hosts h2 { font-size: 26px; margin-bottom: var(--sp-sm); }
-  .hosts-tagline {
-    font-family: var(--font-mono);
-    font-size: 12.5px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: var(--sp-lg);
-  }
+  .hosts h2 { font-size: 26px; margin-bottom: var(--sp-lg); }
   .hostgrid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-xl); }
   @media (max-width: 700px) { .hostgrid { grid-template-columns: 1fr; } }
   .host {
