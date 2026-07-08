@@ -43,6 +43,24 @@ const recent = rest.slice(0, 4);
     </div>
   </section>
 
+  <section class="daily">
+    <div class="wrap inner">
+      <div class="wafer-bg"><WaferMark size={180} /></div>
+      <div class="kicker daily-kicker">THE NEWSLETTER · EVERY TRADING DAY</div>
+      <h2>Semi Doped Daily</h2>
+      <p class="daily-dek">The daily brew of semiconductors. The news that matters and what it means. Free.</p>
+      <div class="issues">
+        {daily.map((post) => (
+          <a class="issue" href={post.link} rel="noopener">
+            <span class="mono-meta issue-date">{formatDate(post.date)}</span>
+            <span class="issue-title">{post.title}</span>
+          </a>
+        ))}
+      </div>
+      <a class="btn btn-solid" href={LINKS.daily} rel="noopener">Sign up free</a>
+    </div>
+  </section>
+
   <section class="hosts" id="hosts">
     <div class="wrap">
       <h2>The engineer&rsquo;s engineer and the chip strategist</h2>
@@ -78,23 +96,6 @@ const recent = rest.slice(0, 4);
     </div>
   </section>
 
-  <section class="daily">
-    <div class="wrap inner">
-      <div class="wafer-bg"><WaferMark size={180} /></div>
-      <div class="kicker daily-kicker">THE NEWSLETTER · EVERY TRADING DAY</div>
-      <h2>Semi Doped Daily</h2>
-      <p class="daily-dek">The daily brew of semiconductors. The news that matters and what it means. Free.</p>
-      <div class="issues">
-        {daily.map((post) => (
-          <a class="issue" href={post.link} rel="noopener">
-            <span class="mono-meta issue-date">{formatDate(post.date)}</span>
-            <span class="issue-title">{post.title}</span>
-          </a>
-        ))}
-      </div>
-      <a class="btn btn-solid" href={LINKS.daily} rel="noopener">Sign up free</a>
-    </div>
-  </section>
 </Shell>
 
 <style>
