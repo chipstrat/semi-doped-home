@@ -1,0 +1,223 @@
+---
+import Base from '../layouts/Base.astro';
+import WaferMark from '../components/WaferMark.astro';
+import { STATS, QUOTES } from '../data/stats';
+import { LINKS } from '../lib/feeds';
+const year = new Date().getFullYear();
+---
+<Base
+  title="Partner with Semi Doped"
+  description="Reach the engineers who design the silicon and the investors who fund it. Weekly podcast + daily newsletter on the business and technology of semiconductors."
+>
+  <header class="phero">
+    <div class="wrap inner">
+      <a class="home-link" href="/">
+        <WaferMark size={30} />
+        <span class="wm"><span class="s">SEMI </span><span class="d">DOPED</span></span>
+      </a>
+      <div class="kicker">PARTNERSHIPS</div>
+      <h1>Your brand, beside analysis this audience already trusts.</h1>
+      <p class="dek">Austin Lyons and Vik Sekar cover the chips, the supply chain, and the companies powering the AI buildout — in a weekly ~45-minute podcast and a daily newsletter. Deep enough for the engineers who design the silicon, clear enough for the investors who fund it.</p>
+    </div>
+  </header>
+
+  <section class="stats">
+    <div class="wrap">
+      <div class="kicker">BY THE NUMBERS</div>
+      <div class="statgrid">
+        {STATS.map((s) => (
+          <div class="stat">
+            <div class="v">{s.value}</div>
+            <div class="l">{s.label}</div>
+          </div>
+        ))}
+      </div>
+      <p class="mono-meta note">LAUNCHED JAN 2026 · ZERO PROMOTION SPEND · HALF US, HALF INTERNATIONAL</p>
+    </div>
+  </section>
+
+  <section class="who">
+    <div class="wrap">
+      <div class="kicker">WHO'S LISTENING</div>
+      <p class="big">Listeners at every major chipmaker, the leading AI labs, and 60+ investment firms — on their corporate email.</p>
+      <p class="muted">Engineers, executives, and investors across 110 countries. Top cities: New York, Singapore, San Francisco, Taipei, London, Bangalore.</p>
+      <div class="quotes">
+        {QUOTES.map((q) => (
+          <blockquote>
+            <p>&ldquo;{q.text}&rdquo;</p>
+            <cite>{q.who}</cite>
+          </blockquote>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="offer">
+    <div class="wrap">
+      <div class="kicker">WHAT PARTNERS GET</div>
+      <ul class="perks">
+        <li>Host-read spots in the episode</li>
+        <li>Logo on video and clips</li>
+        <li>Daily newsletter placement</li>
+        <li>Category exclusivity</li>
+        <li>Custom episode opportunities</li>
+      </ul>
+      <p class="muted">The founding partner roster is intentionally small, and founding partners lock in today's rates.</p>
+      <a class="btn btn-solid" href="mailto:austin@semidoped.com?subject=Semi%20Doped%20partnership%20kit&cc=vik@semidoped.com">Request the partnership kit</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap foot">
+      <span class="mono-meta links">
+        <a href="/">HOME</a> /
+        <a href={LINKS.podcast}>PODCAST</a> /
+        <a href={LINKS.daily}>DAILY</a> /
+        <a href={LINKS.youtube} rel="noopener">YOUTUBE</a>
+      </span>
+      <span class="mono-meta">© {year} SEMI DOPED LLC</span>
+    </div>
+  </footer>
+</Base>
+
+<style>
+  .phero {
+    background: var(--black);
+    color: var(--on-black);
+    position: relative;
+    overflow: hidden;
+  }
+  .phero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(55% 120% at 70% 0%, rgba(233, 104, 34, 0.2), transparent 62%);
+    pointer-events: none;
+  }
+  .phero .inner {
+    position: relative;
+    padding-top: var(--sp-xl);
+    padding-bottom: var(--sp-3xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-lg);
+    align-items: flex-start;
+  }
+  .home-link { display: flex; align-items: center; gap: 10px; text-decoration: none; margin-bottom: var(--sp-xl); }
+  .home-link .wm { font-family: var(--font-display); font-weight: 700; font-size: 16px; letter-spacing: 0.12em; }
+  .home-link .s { color: #fff; }
+  .home-link .d { color: var(--accent); }
+  .phero .kicker { color: var(--accent); }
+  h1 {
+    font-size: clamp(30px, 4.6vw, 48px);
+    max-width: 22ch;
+    color: #fff;
+  }
+  .dek { font-size: 18px; color: var(--on-black-muted); max-width: 62ch; }
+
+  section { border-bottom: 1px solid var(--hairline); }
+  section .wrap { padding-top: var(--sp-2xl); padding-bottom: var(--sp-2xl); }
+  section .kicker { margin-bottom: var(--sp-lg); }
+
+  .statgrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--sp-md);
+  }
+  @media (max-width: 820px) { .statgrid { grid-template-columns: repeat(2, 1fr); } }
+  .stat {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    padding: var(--sp-lg);
+  }
+  .stat .v {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 34px;
+    color: var(--accent);
+    line-height: 1.1;
+  }
+  .stat .l {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .note { margin-top: var(--sp-md); letter-spacing: 0.1em; }
+
+  .big {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(20px, 2.6vw, 26px);
+    line-height: 1.35;
+    max-width: 34ch;
+    margin-bottom: var(--sp-md);
+  }
+  .muted { color: var(--muted); max-width: 62ch; }
+  .quotes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-md);
+    margin-top: var(--sp-xl);
+  }
+  @media (max-width: 820px) { .quotes { grid-template-columns: 1fr; } }
+  blockquote {
+    border-left: 3px solid var(--accent);
+    background: var(--surface);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: var(--sp-lg);
+  }
+  blockquote p { font-size: 16px; line-height: 1.55; }
+  blockquote cite {
+    display: block;
+    margin-top: var(--sp-md);
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .perks {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+    gap: 10px var(--sp-xl);
+    max-width: 720px;
+    margin-bottom: var(--sp-lg);
+  }
+  @media (max-width: 640px) { .perks { grid-template-columns: 1fr; } }
+  .perks li {
+    padding-left: 22px;
+    position: relative;
+    font-size: 16.5px;
+  }
+  .perks li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .offer .btn { margin-top: var(--sp-md); }
+
+  footer { border: none; }
+  .foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--sp-md);
+    padding-top: var(--sp-lg);
+    padding-bottom: var(--sp-lg);
+  }
+  .links a { color: var(--ink); text-decoration: none; transition: color 0.2s ease; }
+  .links a:hover { color: var(--accent); }
+</style>
