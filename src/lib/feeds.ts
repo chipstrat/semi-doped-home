@@ -7,7 +7,7 @@ const PODCAST_FEED = 'https://feeds.buzzsprout.com/2570635.rss';
 const DAILY_FEED = 'https://semidoped.substack.com/feed';
 
 export const LINKS = {
-  podcast: 'https://semidoped.fm',
+  podcast: '/episodes/',
   daily: 'https://daily.semidoped.com',
   youtube: 'https://www.youtube.com/@SemiDoped',
   apple: 'https://podcasts.apple.com/podcast/id1866707196',
@@ -65,7 +65,7 @@ export async function getLatestEpisodes(count = 2): Promise<FeedItem[]> {
     const slug = (mp3.split('/').pop() ?? '').replace(/\.mp3$/, '').replace(/^\d+-/, '');
     return {
       title: text(item.title),
-      link: `https://semidoped.fm/episodes/${slug}/`,
+      link: `/episodes/${slug}/`,
       date: new Date(text(item.pubDate)),
       duration: Number(text(item['itunes:duration'])) || 0,
       num: items.length - i,
