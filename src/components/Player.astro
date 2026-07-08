@@ -1,0 +1,125 @@
+---
+import { formatClock } from '../lib/feed';
+
+interface Props {
+  src: string;
+  duration: number;
+}
+const { src, duration } = Astro.props;
+---
+<div class="player" data-player>
+  <button class="play" data-play aria-label="Play episode"></button>
+  <div class="track">
+    <div class="bar" data-bar><i data-fill></i></div>
+    <div class="meta">
+      <span data-time>0:00</span>
+      <span>{formatClock(duration)}</span>
+    </div>
+  </div>
+  <audio data-audio src={src} preload="none"></audio>
+</div>
+
+<style>
+  .player {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    max-width: 640px;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    padding: 14px 20px;
+    border-radius: var(--radius-md);
+  }
+  .play {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    flex: none;
+    background: var(--accent);
+    border: none;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.2s ease;
+  }
+  .play:hover { background: var(--brick); }
+  .play::after {
+    content: '';
+    position: absolute;
+    left: 55%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-left: 16px solid #fff;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+  }
+  .play.playing::after {
+    border: none;
+    width: 14px;
+    height: 16px;
+    left: 50%;
+    border-left: 5px solid #fff;
+    border-right: 5px solid #fff;
+    background: transparent;
+  }
+  .track { flex: 1; }
+  .bar {
+    height: 4px;
+    background: var(--hairline);
+    border-radius: 2px;
+    position: relative;
+    cursor: pointer;
+  }
+  .bar i {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 0%;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+</style>
+
+<script>
+  function clock(s: number): string {
+    const m = Math.floor(s / 60);
+    const r = Math.floor(s % 60);
+    return `${m}:${String(r).padStart(2, '0')}`;
+  }
+  document.querySelectorAll<HTMLElement>('[data-player]').forEach((el) => {
+    const audio = el.querySelector<HTMLAudioElement>('[data-audio]')!;
+    const play = el.querySelector<HTMLButtonElement>('[data-play]')!;
+    const bar = el.querySelector<HTMLElement>('[data-bar]')!;
+    const fill = el.querySelector<HTMLElement>('[data-fill]')!;
+    const time = el.querySelector<HTMLElement>('[data-time]')!;
+
+    play.addEventListener('click', () => {
+      if (audio.paused) {
+        // Pause any other players on the page first.
+        document.querySelectorAll<HTMLAudioElement>('[data-audio]').forEach((a) => {
+          if (a !== audio) a.pause();
+        });
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    });
+    audio.addEventListener('play', () => play.classList.add('playing'));
+    audio.addEventListener('pause', () => play.classList.remove('playing'));
+    audio.addEventListener('timeupdate', () => {
+      if (audio.duration) fill.style.width = `${(audio.currentTime / audio.duration) * 100}%`;
+      time.textContent = clock(audio.currentTime);
+    });
+    bar.addEventListener('click', (e) => {
+      const rect = bar.getBoundingClientRect();
+      const frac = (e.clientX - rect.left) / rect.width;
+      if (audio.duration) audio.currentTime = frac * audio.duration;
+    });
+  });
+</script>

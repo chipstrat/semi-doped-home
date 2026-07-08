@@ -1,0 +1,45 @@
+---
+import WaferMark from './WaferMark.astro';
+---
+<header>
+  <div class="wrap mast">
+    <a class="wordmark" href="/">
+      <WaferMark size={34} />
+      <span class="wm"><span class="s">SEMI </span><span class="d">DOPED</span></span>
+    </a>
+    <nav>
+      <a href="/episodes/">Episodes</a>
+      <a href="/#hosts">Hosts</a>
+      <a href="https://daily.semidoped.com/" rel="noopener">Daily</a>
+    </nav>
+    <a class="btn btn-solid" href="/#listen">Subscribe</a>
+  </div>
+</header>
+
+<style>
+  header { border-bottom: 1px solid var(--hairline); background: var(--bg); }
+  .mast {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 18px;
+    padding-bottom: 18px;
+    gap: var(--sp-md);
+  }
+  .wordmark { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .wm {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 19px;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+  }
+  .wm .s { color: var(--ink); }
+  .wm .d { color: var(--accent); }
+  nav { display: flex; gap: 28px; font-size: 15px; }
+  nav a { color: var(--ink); text-decoration: none; transition: color 0.2s ease; }
+  nav a:hover { color: var(--accent); }
+  @media (max-width: 640px) {
+    nav { display: none; }
+  }
+</style>

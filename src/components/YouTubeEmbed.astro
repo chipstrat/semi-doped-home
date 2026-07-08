@@ -1,0 +1,73 @@
+---
+// Lite YouTube embed: renders only a thumbnail + play button (fast), and swaps
+// in the real iframe on click. Keeps YouTube's ~2MB of player JS off the page
+// until a visitor actually wants the video.
+interface Props {
+  videoId: string;
+  title: string;
+}
+const { videoId, title } = Astro.props;
+---
+<div class="yt-lite" data-yt={videoId} data-title={title}>
+  <img
+    src={`https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`}
+    onerror={`this.onerror=null;this.src='https://i.ytimg.com/vi/${videoId}/hqdefault.jpg'`}
+    alt={`Watch: ${title}`}
+    loading="lazy"
+    width="1280"
+    height="720"
+  />
+  <button class="yt-play" aria-label={`Play video: ${title}`}></button>
+</div>
+
+<style>
+  .yt-lite {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: #070707;
+    cursor: pointer;
+  }
+  .yt-lite img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .yt-lite :global(iframe) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .yt-play {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: none;
+    cursor: pointer;
+    opacity: 0.94;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+  .yt-lite:hover .yt-play { transform: translate(-50%, -50%) scale(1.06); opacity: 1; }
+  .yt-play::after {
+    content: '';
+    position: absolute;
+    left: 55%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-left: 20px solid #fff;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.yt-lite').forEach((el) => {
+    el.addEventListener('click', () => {
+      const id = el.dataset.yt!;
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+      iframe.title = el.dataset.title ?? 'Semi Doped episode video';
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      iframe.allowFullscreen = true;
+      el.replaceChildren(iframe);
+    }, { once: true });
+  });
+</script>

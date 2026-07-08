@@ -1,0 +1,32 @@
+---
+const year = new Date().getFullYear();
+---
+<footer>
+  <div class="wrap foot">
+    <span class="mono-meta links">
+      LISTEN:
+      <a href="https://podcasts.apple.com/podcast/id1866707196" rel="noopener">APPLE</a> /
+      <a href="https://open.spotify.com/show/0Uuu3s1Nw09f6Xmg24rCZm" rel="noopener">SPOTIFY</a> /
+      <a href="https://www.youtube.com/@SemiDoped" rel="noopener">YOUTUBE</a> /
+      <a href="https://feeds.buzzsprout.com/2570635.rss">RSS</a> /
+      <a href="https://daily.semidoped.com" rel="noopener">DAILY</a> /
+      <a href="/partners/">PARTNERS</a>
+    </span>
+    <span class="mono-meta">© {year} SEMI DOPED LLC</span>
+  </div>
+</footer>
+
+<style>
+  footer { border-top: 1px solid var(--hairline); }
+  .foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--sp-md);
+    padding-top: var(--sp-lg);
+    padding-bottom: var(--sp-lg);
+  }
+  .links a { color: var(--ink); text-decoration: none; transition: color 0.2s ease; }
+  .links a:hover { color: var(--accent); }
+</style>

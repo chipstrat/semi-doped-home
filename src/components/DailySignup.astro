@@ -1,0 +1,41 @@
+---
+import WaferMark from './WaferMark.astro';
+import { LINKS } from '../lib/links';
+---
+<section class="newsletter">
+  <div class="wrap inner">
+    <div class="wafer-bg"><WaferMark size={180} /></div>
+    <h2>Semi Doped Daily</h2>
+    <p>The daily brew of semiconductors. News and analysis in your inbox every trading day.</p>
+    <a class="btn btn-solid" href={LINKS.daily} rel="noopener">Sign up free</a>
+  </div>
+</section>
+
+<style>
+  .newsletter {
+    background: var(--black);
+    color: var(--on-black);
+    position: relative;
+    overflow: hidden;
+  }
+  .newsletter::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--glow-warm);
+    pointer-events: none;
+  }
+  .inner { position: relative; padding-top: var(--sp-3xl); padding-bottom: var(--sp-3xl); }
+  h2 { color: #fff; font-size: 28px; margin-bottom: var(--sp-md); }
+  p { color: var(--on-black-muted); max-width: 52ch; margin-bottom: var(--sp-lg); }
+  .wafer-bg {
+    position: absolute;
+    right: 6%;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+  @media (max-width: 800px) {
+    .wafer-bg { opacity: 0.25; }
+  }
+</style>

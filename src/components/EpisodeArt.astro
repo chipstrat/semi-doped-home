@@ -1,0 +1,56 @@
+---
+// Generated episode art tile: brand black, warm glow, wafer mark, EP number,
+// gradient bar rotating through the lattice palette by episode number.
+import WaferMark from './WaferMark.astro';
+import { epNum } from '../lib/feed';
+
+interface Props {
+  num: number;
+  size?: number;
+}
+const { num, size = 88 } = Astro.props;
+
+const bars = [
+  ['#F2C300', '#E96822'],
+  ['#E96822', '#D94A1E'],
+  ['#D94A1E', '#F2C300'],
+];
+const [c1, c2] = bars[num % bars.length];
+const waferSize = Math.round(size * 0.38);
+const fontSize = Math.max(11, Math.round(size * 0.16));
+---
+<div class="ep-art" style={`width:${size}px;height:${size}px;`}>
+  <WaferMark size={waferSize} />
+  <span class="n" style={`font-size:${fontSize}px;`}>{epNum(num)}</span>
+  <span class="bar" style={`background:linear-gradient(90deg,${c1},${c2});`}></span>
+</div>
+
+<style>
+  .ep-art {
+    flex: none;
+    border-radius: var(--radius-md);
+    background: #070707;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    position: relative;
+    overflow: hidden;
+  }
+  .ep-art::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(70% 70% at 50% 30%, rgba(233, 104, 34, 0.28), transparent 65%);
+  }
+  .ep-art :global(svg) { position: relative; }
+  .n {
+    position: relative;
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #fff;
+  }
+  .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; }
+</style>
