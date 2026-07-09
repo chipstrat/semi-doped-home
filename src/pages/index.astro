@@ -54,6 +54,7 @@ const recent = rest.slice(0, 4);
           <a class="issue" href={post.link} rel="noopener">
             <span class="mono-meta issue-date">{formatDate(post.date)}</span>
             <span class="issue-title">{post.title}</span>
+            {post.dek && <span class="issue-dek">{post.dek}</span>}
           </a>
         ))}
       </div>
@@ -251,6 +252,13 @@ const recent = rest.slice(0, 4);
     transition: color 0.2s ease;
   }
   .issue:hover .issue-title { color: var(--accent); }
+  .issue-dek {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--on-black-muted);
+    max-width: 64ch;
+    margin-top: 2px;
+  }
   .wafer-bg {
     position: absolute;
     right: 6%;
