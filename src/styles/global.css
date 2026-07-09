@@ -46,6 +46,8 @@ body {
   font-size: 17px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  /* Nothing may force horizontal scroll on small screens. */
+  overflow-x: clip;
 }
 
 a { color: var(--accent); }
@@ -77,7 +79,6 @@ h1, h2, h3 {
   font-size: 12px;
   letter-spacing: 0.04em;
   color: var(--muted);
-  white-space: nowrap;
 }
 
 .btn {
