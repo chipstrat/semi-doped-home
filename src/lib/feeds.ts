@@ -25,6 +25,8 @@ export interface FeedItem {
   duration?: number;
   /** Podcast only: episode number (oldest = 1). */
   num?: number;
+  /** Daily only: the issue's dek/subtitle. */
+  dek?: string;
 }
 
 const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
@@ -80,6 +82,7 @@ export async function getLatestDaily(count = 3): Promise<FeedItem[]> {
       title: text(item.title),
       link: text(item.link),
       date: new Date(text(item.pubDate)),
+      dek: text(item.description).replace(/<[^>]+>/g, '').trim(),
     }));
   } catch (err) {
     // Substack intermittently 403s datacenter IPs (e.g. GitHub Actions

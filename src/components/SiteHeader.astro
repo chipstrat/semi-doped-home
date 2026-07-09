@@ -40,6 +40,25 @@ import WaferMark from './WaferMark.astro';
   nav a { color: var(--ink); text-decoration: none; transition: color 0.2s ease; }
   nav a:hover { color: var(--accent); }
   @media (max-width: 640px) {
-    nav { display: none; }
+    .mast {
+      flex-wrap: wrap;
+      row-gap: 12px;
+      padding-top: 14px;
+      padding-bottom: 14px;
+    }
+    .wm { font-size: 17px; }
+    /* Nav drops to its own full-width row — visible, no hamburger. */
+    nav {
+      order: 3;
+      width: 100%;
+      gap: 22px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-top: 1px solid var(--hairline);
+      padding-top: 12px;
+    }
+    .cta { padding: 6px 16px; font-size: 13px; }
   }
 </style>
