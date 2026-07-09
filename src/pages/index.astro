@@ -16,6 +16,12 @@ const [latest, ...rest] = episodes;
 const recent = rest.slice(0, 4);
 ---
 <Shell title="Semi Doped — The Semiconductor Podcast">
+  <section class="motto">
+    <div class="wrap motto-inner">
+      <p class="motto-line">The world&rsquo;s most interesting industry <span class="dot">&middot;</span><br class="brk" /> and its most interesting people.</p>
+    </div>
+  </section>
+
   <section class="hero">
     <div class="wrap herogrid">
       <div class="hero-copy">
@@ -32,13 +38,6 @@ const recent = rest.slice(0, 4);
           <YouTubeEmbed videoId={latest.videoId} title={latest.title} />
         </div>
       )}
-    </div>
-  </section>
-
-  <section class="motto">
-    <div class="wrap motto-inner">
-      <WaferMark size={44} />
-      <p class="motto-line">The world&rsquo;s most interesting industry <span class="dot">&middot;</span><br class="brk" /> and its most interesting people.</p>
     </div>
   </section>
 
@@ -141,14 +140,13 @@ const recent = rest.slice(0, 4);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--sp-md);
-    padding-top: var(--sp-2xl);
-    padding-bottom: var(--sp-2xl);
+    padding-top: var(--sp-md);
+    padding-bottom: var(--sp-md);
   }
   .motto-line {
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: clamp(22px, 3.2vw, 32px);
+    font-size: 20px;
     line-height: 1.35;
     letter-spacing: 0.01em;
     text-align: center;
