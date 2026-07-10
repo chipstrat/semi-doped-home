@@ -3,15 +3,16 @@
 // Usage: node scripts/mobile-overflow-check.mjs [base-url]
 //   base-url defaults to https://semidoped.com — pass http://localhost:4321
 //   after `npm run preview` to check a local build.
-// Requires playwright + chrome (not a repo dep; run where playwright exists,
-// e.g. framework:~/semidoped/sdd-pod).
+// Runs in CI against the local build (see deploy.yml), or anywhere playwright
+// exists (framework:~/semidoped/sdd-pod needs PW_CHANNEL=chrome).
 // Exits 1 if any page scrolls horizontally at 390px, printing the offenders.
 import { chromium } from 'playwright';
 
 const base = process.argv[2] || 'https://semidoped.com';
 const pages = ['/', '/episodes/', '/partners/'];
 
-const browser = await chromium.launch({ headless: true, channel: 'chrome' });
+const channel = process.env.PW_CHANNEL;
+const browser = await chromium.launch({ headless: true, ...(channel ? { channel } : {}) });
 const ctx = await browser.newContext({
   viewport: { width: 390, height: 844 },
   isMobile: true,
