@@ -34,9 +34,9 @@ import { LINKS } from '../lib/links';
     border-top: 5.5px solid transparent;
     border-bottom: 5.5px solid transparent;
   }
-</style>
-
-<style>
+  /* Must live in the SAME style block as the base rule: Astro bundles multiple
+     scoped <style> blocks in an order that put a second block's media query
+     BEFORE the base rule, so the equal-specificity nowrap base won on mobile. */
   @media (max-width: 640px) {
     .platforms { gap: 12px 18px; font-size: 11px; flex-wrap: wrap; white-space: normal; }
   }
