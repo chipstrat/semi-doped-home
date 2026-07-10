@@ -29,6 +29,18 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}
+      - name: Mobile overflow check
+        run: |
+          npm i --no-save playwright
+          npx playwright install --with-deps chromium
+          npx astro preview --host 127.0.0.1 --port 4321 &
+          for i in $(seq 1 20); do curl -sf http://127.0.0.1:4321/ >/dev/null && break; sleep 1; done
+          node scripts/mobile-overflow-check.mjs http://127.0.0.1:4321
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
