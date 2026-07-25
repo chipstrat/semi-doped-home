@@ -20,7 +20,11 @@ theme park. Personality only through the wafer mark, orange accent, and type.
 
 ## Data sources (fetched at build time; hourly Actions rebuild)
 - Podcast: https://feeds.buzzsprout.com/2570635.rss
-- Daily: https://semidoped.substack.com/feed (substack.com host survives domain moves)
+- Daily: https://daily.semidoped.com/feed, then https://semidoped.substack.com/feed
+  as backstop. Order matters: Substack's bot protection 403s GitHub Actions
+  runner IPs on the *.substack.com host but serves the custom domain fine. If
+  both routes fail the build uses src/data/daily-fallback.json and emits a
+  `::warning::` in the run summary — if you see that, the homepage is stale.
 
 ## Notes
 - 404.astro forwards old Substack paths (/p/, /s/, /archive, …) to daily.semidoped.com.
