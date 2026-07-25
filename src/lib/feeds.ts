@@ -2,9 +2,15 @@ import { XMLParser } from 'fast-xml-parser';
 
 // Both feeds are fetched at build time; the site rebuilds hourly via Actions.
 const PODCAST_FEED = 'https://feeds.buzzsprout.com/2570635.rss';
-// substack.com host is stable regardless of which custom domain the
-// publication uses, so the build never breaks during domain moves.
-const DAILY_FEED = 'https://semidoped.substack.com/feed';
+// Tried in order. Substack's bot protection 403s datacenter IPs (GitHub
+// Actions runners) on the *.substack.com host but serves the same feed fine
+// through the custom domain, so the custom domain goes first. The substack.com
+// host stays as a backstop: it is stable regardless of which custom domain the
+// publication uses, so the build survives a domain move too.
+const DAILY_FEEDS = [
+  'https://daily.semidoped.com/feed',
+  'https://semidoped.substack.com/feed',
+];
 
 export const LINKS = {
   podcast: '/episodes/',
@@ -76,24 +82,33 @@ export async function getLatestEpisodes(count = 2): Promise<FeedItem[]> {
 }
 
 export async function getLatestDaily(count = 3): Promise<FeedItem[]> {
-  try {
-    const items = await fetchItems(DAILY_FEED);
-    return items.slice(0, count).map((item: any) => ({
-      title: text(item.title),
-      link: text(item.link),
-      date: new Date(text(item.pubDate)),
-      dek: text(item.description).replace(/<[^>]+>/g, '').trim(),
-    }));
-  } catch (err) {
-    // Substack intermittently 403s datacenter IPs (e.g. GitHub Actions
-    // runners). Fall back to the committed snapshot so the build never
-    // fails — the card shows the latest-known issues instead of nothing.
-    console.warn(`Daily feed unavailable, using fallback: ${err}`);
-    const fallback = (await import('../data/daily-fallback.json')).default as {
-      title: string;
-      link: string;
-      date: string;
-    }[];
-    return fallback.slice(0, count).map((p) => ({ ...p, date: new Date(p.date) }));
+  const errors: string[] = [];
+  for (const url of DAILY_FEEDS) {
+    try {
+      const items = await fetchItems(url);
+      return items.slice(0, count).map((item: any) => ({
+        title: text(item.title),
+        link: text(item.link),
+        date: new Date(text(item.pubDate)),
+        dek: text(item.description).replace(/<[^>]+>/g, '').trim(),
+      }));
+    } catch (err) {
+      errors.push(String(err));
+    }
   }
+  // Every route failed. Fall back to the committed snapshot so the build never
+  // fails — the card shows the latest-known issues instead of nothing. The
+  // snapshot goes stale silently, so shout loudly enough to be seen in the
+  // Actions run summary rather than buried in the build log.
+  console.warn(
+    `::warning title=Daily feed unavailable::Falling back to the committed ` +
+      `snapshot in src/data/daily-fallback.json — the homepage Daily issues ` +
+      `are STALE. Routes tried: ${errors.join(' | ')}`,
+  );
+  const fallback = (await import('../data/daily-fallback.json')).default as {
+    title: string;
+    link: string;
+    date: string;
+  }[];
+  return fallback.slice(0, count).map((p) => ({ ...p, date: new Date(p.date) }));
 }
