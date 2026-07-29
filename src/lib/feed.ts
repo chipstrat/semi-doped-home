@@ -52,6 +52,12 @@ function slugFromEnclosure(url: string): string {
   return base.replace(/^\d+-/, '');
 }
 
+/** Buzzsprout's numeric episode id — stable across retitles, unlike the slug. */
+function idFromEnclosure(url: string): string {
+  const base = url.split('/').pop()?.replace(/\.mp3$/, '') ?? '';
+  return base.match(/^(\d+)-/)?.[1] ?? '';
+}
+
 function text(v: unknown): string {
   if (v == null) return '';
   if (typeof v === 'string') return v;
@@ -107,7 +113,12 @@ export async function getEpisodes(): Promise<Episode[]> {
     const mp3 = item.enclosure?.['@_url'] ?? '';
     const title = text(item.title);
     const slug = slugFromEnclosure(mp3);
-    const videoId = curated[slug] ?? uploads.find((u) => u.n === normTitle(title))?.id;
+    // Prefer the stable episode id; slug lookup stays as a fallback for any
+    // entry scripts/refresh-youtube-map.mjs has not re-keyed yet.
+    const videoId =
+      curated[idFromEnclosure(mp3)] ??
+      curated[slug] ??
+      uploads.find((u) => u.n === normTitle(title))?.id;
     return {
       num: total - i,
       title,

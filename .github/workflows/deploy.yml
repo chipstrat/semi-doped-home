@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write   # refresh-youtube-map commits newly captured episode→video ids
   pages: write
   id-token: write
 
@@ -28,6 +28,22 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Refresh YouTube episode map
+        # The channel RSS only exposes the 15 newest uploads and sdd-clips Shorts
+        # saturate it within days, so capture each new episode's video id while it
+        # is still visible — otherwise it ages out and falls back to a generic tile.
+        run: node scripts/refresh-youtube-map.mjs
+      - name: Commit any newly captured mappings
+        run: |
+          if git diff --quiet -- src/data/youtube.json; then
+            echo "no new mappings"
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/youtube.json
+          git commit -m "youtube map: capture new episode mappings [skip ci]"
+          git push
       - run: npm run build
       - name: Cache Playwright browsers
         uses: actions/cache@v4
