@@ -30,8 +30,29 @@ theme park. Personality only through the wafer mark, orange accent, and type.
 - `summary_large_image` everywhere. Episode pages use the episode's YouTube
   thumbnail (`i.ytimg.com/vi/<id>/maxresdefault.jpg`); everything else uses
   `public/og/semi-doped.png`, the 2026 brand banner. An episode with no entry in
-  youtube.json silently falls back to the banner — check there if a card looks
-  generic.
+  youtube.json falls back to the banner — so a generic card means a missing
+  mapping, which the deploy now reports as a red annotation (see below).
+
+## Episode → YouTube mapping
+`scripts/refresh-youtube-map.mjs` fills `src/data/youtube.json` from three
+sources, and they fail at different times — that is the point of having three:
+1. `sdd-clips/episodes.tsv` — exact id join, written by sdd-pod at upload.
+   **Local only**: the Semi-Doped repo's origin is a bare repo on the framework
+   box, not GitHub, so it never exists in Actions. Running the script on a
+   machine that has the repo is the fastest repair available.
+2. The **Semi Doped Episodes** playlist feed — 15 entries, but episodes-only, so
+   ~3 months of coverage. Curated BY HAND on YouTube; nothing automates it.
+   Fuzzy title matching is allowed here because the pool is only episodes.
+3. The channel uploads feed — ~3 days of coverage before Shorts flush it.
+   **Exact title match only.** Shorts are cut from the episodes and share their
+   vocabulary, so fuzzy matching here pairs an episode with its own clip.
+
+Shorts are filtered out of both feeds by probing `youtube.com/shorts/<id>`
+(200 = Short, 303 = full video); an unreachable probe counts as a Short, since a
+wrong id embeds someone else's video while a missing one just logs an error.
+
+If the run summary flags an unmapped episode, the cheapest durable fix is adding
+the video to the Episodes playlist — that keeps it findable for months.
 
 ## Transcripts
 - Full transcripts are published as their own Daily posts (titled with a 🎙️),

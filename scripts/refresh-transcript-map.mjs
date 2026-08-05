@@ -21,6 +21,7 @@ import { XMLParser } from 'fast-xml-parser';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { bestMatch } from './lib/title-match.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const MAP_FILE = path.join(HERE, '..', 'src', 'data', 'transcripts.json');
@@ -56,31 +57,6 @@ function transcriptSubject(title) {
     .replace(/^\s*semi\s*doped\s*:\s*/i, '')
     .replace(/^\s*\d{4}[.\-/]\d{2}[.\-/]\d{2}\s*[-–—:]\s*/, '')
     .trim();
-}
-
-const STOP = new Set([
-  'a', 'an', 'the', 'and', 'or', 'is', 'it', 'its', 'on', 'in', 'of', 'for',
-  'to', 'with', 'at', 's', 'how', 'why', 'what', 'as', 'are', 'be', 'more',
-]);
-
-function tokens(s) {
-  return new Set(
-    s
-      .toLowerCase()
-      .replace(/[‘’']/g, '')
-      .split(/[^a-z0-9]+/)
-      .filter((w) => w && !STOP.has(w)),
-  );
-}
-
-/** Containment score: how much of the shorter title the two share. */
-function score(a, b) {
-  const A = tokens(a);
-  const B = tokens(b);
-  if (!A.size || !B.size) return 0;
-  let hits = 0;
-  for (const w of A) if (B.has(w)) hits += 1;
-  return hits / Math.min(A.size, B.size);
 }
 
 async function fetchJson(url) {
@@ -169,22 +145,20 @@ for (const post of posts) {
   if (taken.has(post.url)) continue;
   const subject = transcriptSubject(post.title);
   // Only episodes that aired shortly before the post can be its transcript.
-  const ranked = episodes
-    .filter((ep) => ep.id && !map[ep.id])
-    .map((ep) => ({ ep, lag: (post.date - ep.date) / DAY, s: score(subject, ep.title) }))
-    .filter((c) => c.lag >= -1 && c.lag <= MAX_LAG_DAYS)
-    .sort((a, b) => b.s - a.s);
+  const candidates = episodes.filter((ep) => {
+    if (!ep.id || map[ep.id]) return false;
+    const lag = (post.date - ep.date) / DAY;
+    return lag >= -1 && lag <= MAX_LAG_DAYS;
+  });
 
-  const [best, runnerUp] = ranked;
-  // 0.6 containment, and a clear win over the next candidate — a tie means the
-  // titles are too generic to pair confidently, so leave it for a human.
-  if (!best || best.s < 0.6 || (runnerUp && best.s - runnerUp.s < 0.15)) {
+  const best = bestMatch(subject, candidates);
+  if (!best) {
     console.log(`::warning::no confident episode match for transcript "${post.title}" (${post.url})`);
     continue;
   }
-  map[best.ep.id] = post.url;
+  map[best.item.id] = post.url;
   taken.add(post.url);
-  added.push(`${best.ep.id} -> ${post.url}  (${best.s.toFixed(2)})  ${best.ep.title.slice(0, 55)}`);
+  added.push(`${best.item.id} -> ${post.url}  (${best.score.toFixed(2)})  ${best.item.title.slice(0, 55)}`);
 }
 
 if (added.length) {
