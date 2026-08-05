@@ -20,7 +20,12 @@ interface Props {
 }
 const { episode } = Astro.props;
 ---
-<Shell title={`${episode.title} — Semi Doped`} description={episode.summary.slice(0, 200)}>
+<Shell
+  title={`${episode.title} — Semi Doped`}
+  description={episode.summary.slice(0, 200)}
+  image={episode.ogImage}
+  imageAlt={episode.title}
+>
   <article>
     <section class="head">
       <div class="wrap headgrid">
@@ -45,8 +50,22 @@ const { episode } = Astro.props;
 
     <section class="notes">
       <div class="wrap">
-        <h2 class="kicker">SHOW NOTES</h2>
+        <div class="noteshead">
+          <h2 class="kicker">SHOW NOTES</h2>
+          {episode.transcriptUrl && (
+            <a class="transcript" href={episode.transcriptUrl} rel="noopener">
+              READ THE FULL TRANSCRIPT <span class="arw">↗</span>
+            </a>
+          )}
+        </div>
         <div class="prose" set:html={episode.notesHtml} />
+        {episode.transcriptUrl && (
+          <div class="foot">
+            <a class="transcript" href={episode.transcriptUrl} rel="noopener">
+              READ THE FULL TRANSCRIPT <span class="arw">↗</span>
+            </a>
+          </div>
+        )}
         <a class="back" href="/episodes/">← ALL EPISODES</a>
       </div>
     </section>
@@ -70,7 +89,34 @@ const { episode } = Astro.props;
   h1 { font-size: clamp(26px, 3.6vw, 40px); max-width: 24ch; }
   .video { max-width: 860px; margin-bottom: var(--sp-lg); }
   .notes { padding: 44px 0 56px; }
-  .notes .kicker { margin-bottom: 22px; }
+  .noteshead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--sp-md);
+    flex-wrap: wrap;
+    max-width: 68ch;
+    margin-bottom: 22px;
+  }
+  .transcript {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+    white-space: nowrap;
+  }
+  .transcript:hover { border-bottom-color: var(--accent); }
+  .arw { font-family: var(--font-body); }
+  /* Show notes run long; repeat the link where the reader finishes them. */
+  .foot {
+    max-width: 68ch;
+    margin-top: var(--sp-lg);
+    padding-top: var(--sp-lg);
+    border-top: 1px solid var(--hairline);
+  }
   .prose { max-width: 68ch; }
   .prose :global(p) { margin-bottom: 1em; }
   .prose :global(a) { color: var(--accent); }
@@ -85,5 +131,10 @@ const { episode } = Astro.props;
     letter-spacing: 0.1em;
     color: var(--accent);
     text-decoration: none;
+  }
+  /* Must come after the base rules above — equal specificity, so source order
+     decides. Both labels on one line is too tight below ~430px. */
+  @media (max-width: 640px) {
+    .noteshead { flex-direction: column; align-items: flex-start; gap: 10px; }
   }
 </style>

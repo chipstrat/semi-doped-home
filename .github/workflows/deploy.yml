@@ -33,16 +33,21 @@ jobs:
         # saturate it within days, so capture each new episode's video id while it
         # is still visible — otherwise it ages out and falls back to a generic tile.
         run: node scripts/refresh-youtube-map.mjs
+      - name: Refresh transcript map
+        # Transcripts land on the Daily days after the episode and share no id
+        # with Buzzsprout, so the pairing is matched here and committed; the
+        # build only reads the map.
+        run: node scripts/refresh-transcript-map.mjs
       - name: Commit any newly captured mappings
         run: |
-          if git diff --quiet -- src/data/youtube.json; then
+          if git diff --quiet -- src/data/youtube.json src/data/transcripts.json; then
             echo "no new mappings"
             exit 0
           fi
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/data/youtube.json
-          git commit -m "youtube map: capture new episode mappings [skip ci]"
+          git add src/data/youtube.json src/data/transcripts.json
+          git commit -m "maps: capture new episode video/transcript links [skip ci]"
           git push
       - run: npm run build
       - name: Cache Playwright browsers
