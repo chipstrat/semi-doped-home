@@ -6,11 +6,17 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description?: string;
+  /** Absolute URL of the social card image. Defaults to the brand banner. */
+  image?: string;
+  imageAlt?: string;
 }
 const {
   title,
   description = 'The business and technology of semiconductors. Alpha for engineers and investors alike.',
+  image = new URL('/og/semi-doped.png', Astro.site).href,
+  imageAlt = 'Semi Doped',
 } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 <!doctype html>
 <html lang="en">
@@ -19,11 +25,17 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://storage.buzzsprout.com/3x9iw6bg497vb5g37628m1y2nnx5?.jpg" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:site_name" content="Semi Doped" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@semidoped" />
+    <meta name="twitter:image" content={image} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate" type="application/rss+xml" title="Semi Doped" href="https://feeds.buzzsprout.com/2570635.rss" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />

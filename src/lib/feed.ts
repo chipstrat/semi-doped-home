@@ -1,5 +1,6 @@
 import { XMLParser } from 'fast-xml-parser';
 import youtubeMap from '../data/youtube.json';
+import transcriptMap from '../data/transcripts.json';
 
 const FEED_URL = 'https://feeds.buzzsprout.com/2570635.rss';
 // @SemiDoped uploads feed — used at build time to auto-map new episodes to
@@ -20,6 +21,10 @@ export interface Episode {
   guid: string;
   /** YouTube video id, when the episode has a video upload. */
   videoId?: string;
+  /** Daily post carrying the full transcript, once one has been published. */
+  transcriptUrl?: string;
+  /** Social-card image: the episode's YouTube thumbnail when it has a video. */
+  ogImage?: string;
 }
 
 export function formatDuration(seconds: number): string {
@@ -106,6 +111,9 @@ export async function getEpisodes(): Promise<Episode[]> {
   const list = Array.isArray(items) ? items : [items];
   const uploads = await getYouTubeUploads();
   const curated = youtubeMap as Record<string, string>;
+  // Written by scripts/refresh-transcript-map.mjs before every build — the
+  // episode↔transcript pairing is matched there, never at render time.
+  const transcripts = transcriptMap as Record<string, string>;
 
   // Feed is newest-first; number from the oldest up.
   const total = list.length;
@@ -120,6 +128,11 @@ export async function getEpisodes(): Promise<Episode[]> {
       curated[slug] ??
       uploads.find((u) => u.n === normTitle(title))?.id;
     return {
+      // maxresdefault is the 1280x720 custom thumbnail; every mapped episode
+      // has one (checked 2026-08-05), and an episode with no video falls back
+      // to the brand banner in the layout.
+      ogImage: videoId ? `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg` : undefined,
+      transcriptUrl: transcripts[idFromEnclosure(mp3)],
       num: total - i,
       title,
       slug,
