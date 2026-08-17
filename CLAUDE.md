@@ -61,6 +61,13 @@ the video to the Episodes playlist — that keeps it findable for months.
   `scripts/refresh-transcript-map.mjs` matches them and commits
   `src/data/transcripts.json` (episode id → post URL); the build only reads it.
   Hand-editing that file is safe — existing entries are never overwritten.
+- The transcript TEXT renders inline on episode pages (2026-08-17).
+  `scripts/refresh-transcript-content.mjs` captures each post's body via the
+  post API on the custom domain into `src/data/transcript-content.json`.
+  Entries refresh every build for 30 days after first capture (posts get
+  edited after shipping — speaker names, formatting), then freeze forever;
+  hand-edits to frozen entries stick. A missing entry falls back to the old
+  "READ THE FULL TRANSCRIPT ↗" link-out, with a `::warning::` in the run.
 
 ## Notes
 - 404.astro forwards old Substack paths (/p/, /s/, /archive, …) to daily.semidoped.com.
