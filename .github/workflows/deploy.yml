@@ -38,15 +38,20 @@ jobs:
         # with Buzzsprout, so the pairing is matched here and committed; the
         # build only reads the map.
         run: node scripts/refresh-transcript-map.mjs
+      - name: Refresh transcript content
+        # The transcript text itself, captured from the Daily post so episode
+        # pages render it inline. Recent captures refresh each build (posts get
+        # edited after shipping), then freeze after 30 days.
+        run: node scripts/refresh-transcript-content.mjs
       - name: Commit any newly captured mappings
         run: |
-          if git diff --quiet -- src/data/youtube.json src/data/transcripts.json; then
+          if git diff --quiet -- src/data/youtube.json src/data/transcripts.json src/data/transcript-content.json; then
             echo "no new mappings"
             exit 0
           fi
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/data/youtube.json src/data/transcripts.json
+          git add src/data/youtube.json src/data/transcripts.json src/data/transcript-content.json
           git commit -m "maps: capture new episode video/transcript links [skip ci]"
           git push
       - run: npm run build
