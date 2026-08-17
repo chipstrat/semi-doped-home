@@ -1,6 +1,7 @@
 import { XMLParser } from 'fast-xml-parser';
 import youtubeMap from '../data/youtube.json';
 import transcriptMap from '../data/transcripts.json';
+import transcriptContent from '../data/transcript-content.json';
 
 const FEED_URL = 'https://feeds.buzzsprout.com/2570635.rss';
 // @SemiDoped uploads feed — used at build time to auto-map new episodes to
@@ -23,6 +24,10 @@ export interface Episode {
   videoId?: string;
   /** Daily post carrying the full transcript, once one has been published. */
   transcriptUrl?: string;
+  /** The transcript itself, captured from that post by
+   *  scripts/refresh-transcript-content.mjs — rendered inline on the episode
+   *  page; the URL stays as attribution and as the fallback link. */
+  transcriptHtml?: string;
   /** Social-card image: the episode's YouTube thumbnail when it has a video. */
   ogImage?: string;
 }
@@ -133,6 +138,9 @@ export async function getEpisodes(): Promise<Episode[]> {
       // to the brand banner in the layout.
       ogImage: videoId ? `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg` : undefined,
       transcriptUrl: transcripts[idFromEnclosure(mp3)],
+      transcriptHtml: (transcriptContent as Record<string, { html: string }>)[
+        idFromEnclosure(mp3)
+      ]?.html,
       num: total - i,
       title,
       slug,

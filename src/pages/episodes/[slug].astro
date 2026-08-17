@@ -52,19 +52,39 @@ const { episode } = Astro.props;
       <div class="wrap">
         <div class="noteshead">
           <h2 class="kicker">SHOW NOTES</h2>
-          {episode.transcriptUrl && (
-            <a class="transcript" href={episode.transcriptUrl} rel="noopener">
-              READ THE FULL TRANSCRIPT <span class="arw">↗</span>
+          {episode.transcriptHtml ? (
+            <a class="transcript" href="#transcript">
+              READ THE FULL TRANSCRIPT <span class="arw">↓</span>
             </a>
+          ) : (
+            episode.transcriptUrl && (
+              <a class="transcript" href={episode.transcriptUrl} rel="noopener">
+                READ THE FULL TRANSCRIPT <span class="arw">↗</span>
+              </a>
+            )
           )}
         </div>
         <div class="prose" set:html={episode.notesHtml} />
-        {episode.transcriptUrl && (
-          <div class="foot">
-            <a class="transcript" href={episode.transcriptUrl} rel="noopener">
-              READ THE FULL TRANSCRIPT <span class="arw">↗</span>
-            </a>
+        {episode.transcriptHtml ? (
+          <div class="transcript-full" id="transcript">
+            <div class="noteshead">
+              <h2 class="kicker">TRANSCRIPT</h2>
+              {episode.transcriptUrl && (
+                <a class="transcript" href={episode.transcriptUrl} rel="noopener">
+                  READ ON SEMI DOPED DAILY <span class="arw">↗</span>
+                </a>
+              )}
+            </div>
+            <div class="prose" set:html={episode.transcriptHtml} />
           </div>
+        ) : (
+          episode.transcriptUrl && (
+            <div class="foot">
+              <a class="transcript" href={episode.transcriptUrl} rel="noopener">
+                READ THE FULL TRANSCRIPT <span class="arw">↗</span>
+              </a>
+            </div>
+          )
         )}
         <a class="back" href="/episodes/">← ALL EPISODES</a>
       </div>
@@ -117,8 +137,20 @@ const { episode } = Astro.props;
     padding-top: var(--sp-lg);
     border-top: 1px solid var(--hairline);
   }
+  /* The transcript reprint reads as its own article: hairline rule above,
+     same 68ch measure as the notes. */
+  .transcript-full {
+    max-width: 68ch;
+    margin-top: var(--sp-xl);
+    padding-top: var(--sp-xl);
+    border-top: 1px solid var(--hairline);
+  }
   .prose { max-width: 68ch; }
   .prose :global(p) { margin-bottom: 1em; }
+  .prose :global(h2) { font-size: 21px; margin: 1.6em 0 0.7em; }
+  .prose :global(h3) { font-size: 17px; margin: 1.4em 0 0.6em; }
+  .prose :global(img) { max-width: 100%; height: auto; }
+  .prose :global(hr) { border: 0; border-top: 1px solid var(--hairline); margin: var(--sp-lg) 0; }
   .prose :global(a) { color: var(--accent); }
   .prose :global(ul), .prose :global(ol) { margin: 0 0 1em 1.2em; }
   .prose :global(li) { margin-bottom: 0.4em; }
