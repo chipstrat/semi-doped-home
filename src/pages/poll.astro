@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+
+// Audience poll (Google Form). Swap this URL to point /poll at a new survey.
+const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeFBGAeeyHImWq75zr4wfX1hegnqTVEtBqg_Gj6O6ZWfsl19g/viewform';
+---
+<Base title="Audience Poll — Semi Doped">
+  <script is:inline define:vars={{ FORM_URL }}>
+    window.location.replace(FORM_URL);
+  </script>
+  <noscript>
+    <meta http-equiv="refresh" content={`0; url=${FORM_URL}`} />
+  </noscript>
+  <main class="poll">
+    <p>Taking you to the poll…</p>
+    <a class="btn btn-solid" href={FORM_URL}>Open the poll</a>
+  </main>
+</Base>
+
+<style>
+  .poll {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+</style>
