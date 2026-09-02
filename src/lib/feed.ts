@@ -2,6 +2,7 @@ import { XMLParser } from 'fast-xml-parser';
 import youtubeMap from '../data/youtube.json';
 import transcriptMap from '../data/transcripts.json';
 import transcriptContent from '../data/transcript-content.json';
+import xStatsMap from '../data/x-stats.json';
 
 const FEED_URL = 'https://feeds.buzzsprout.com/2570635.rss';
 // @SemiDoped uploads feed — used at build time to auto-map new episodes to
@@ -30,6 +31,11 @@ export interface Episode {
   transcriptHtml?: string;
   /** Social-card image: the episode's YouTube thumbnail when it has a video. */
   ogImage?: string;
+  /** The announcement post on X, once the fab collector has found it.
+   *  Views are the post's public X view count — the only stat published on
+   *  the site (per-post, public on X itself; aggregates stay in the kit). */
+  xUrl?: string;
+  xViews?: number;
 }
 
 export function formatDuration(seconds: number): string {
@@ -54,6 +60,13 @@ export function formatDateLong(d: Date): string {
 
 export function epNum(n: number): string {
   return `EP ${String(n).padStart(3, '0')}`;
+}
+
+/** 18908 → "18.9K", matching how X itself renders the count. */
+export function formatViews(n: number): string {
+  if (n >= 1_000_000) return `${+(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `${+(n / 1_000).toFixed(1)}K`;
+  return String(n);
 }
 
 function slugFromEnclosure(url: string): string {
@@ -137,6 +150,8 @@ export async function getEpisodes(): Promise<Episode[]> {
       // has one (checked 2026-08-05), and an episode with no video falls back
       // to the brand banner in the layout.
       ogImage: videoId ? `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg` : undefined,
+      xUrl: (xStatsMap as Record<string, { url: string; views: number }>)[idFromEnclosure(mp3)]?.url,
+      xViews: (xStatsMap as Record<string, { url: string; views: number }>)[idFromEnclosure(mp3)]?.views,
       transcriptUrl: transcripts[idFromEnclosure(mp3)],
       transcriptHtml: (transcriptContent as Record<string, { html: string }>)[
         idFromEnclosure(mp3)
