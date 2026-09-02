@@ -1,6 +1,6 @@
 ---
 import EpisodeArt from './EpisodeArt.astro';
-import { formatDateShort, formatDuration, type Episode } from '../lib/feed';
+import { formatDateShort, formatDuration, formatViews, type Episode } from '../lib/feed';
 
 interface Props {
   episode: Episode;
@@ -26,7 +26,12 @@ const { episode } = Astro.props;
     <h3 class="title"><a href={`/episodes/${episode.slug}/`}>{episode.title}</a></h3>
     <p class="sub">{episode.summary.length > 220 ? episode.summary.slice(0, 220).trimEnd() + '…' : episode.summary}</p>
   </div>
-  <span class="mono-meta">{formatDateShort(episode.date)} · {formatDuration(episode.duration)}</span>
+  <span class="mono-meta meta-col">
+    <span>{formatDateShort(episode.date)} · {formatDuration(episode.duration)}</span>
+    {episode.xUrl && episode.xViews && (
+      <a class="x-views" href={episode.xUrl} rel="noopener">{formatViews(episode.xViews)} VIEWS ON X&nbsp;↗</a>
+    )}
+  </span>
 </article>
 
 <style>
@@ -39,6 +44,12 @@ const { episode } = Astro.props;
     border-top: 1px solid var(--hairline);
   }
   .ep > .mono-meta { white-space: nowrap; }
+  .meta-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
   .thumb-link { display: block; }
   .thumb {
     display: block;
@@ -81,5 +92,6 @@ const { episode } = Astro.props;
       overflow: hidden;
     }
     .ep > .mono-meta { grid-column: 2; margin-top: 2px; }
+    .meta-col { flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
   }
 </style>

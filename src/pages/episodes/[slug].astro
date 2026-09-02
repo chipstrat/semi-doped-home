@@ -5,7 +5,7 @@ import Platforms from '../../components/Platforms.astro';
 import EpisodeArt from '../../components/EpisodeArt.astro';
 import YouTubeEmbed from '../../components/YouTubeEmbed.astro';
 import DailySignup from '../../components/DailySignup.astro';
-import { getEpisodes, formatDateLong, formatDuration, epNum, type Episode } from '../../lib/feed';
+import { getEpisodes, formatDateLong, formatDuration, formatViews, epNum, type Episode } from '../../lib/feed';
 
 export async function getStaticPaths() {
   const episodes = await getEpisodes();
@@ -32,7 +32,9 @@ const { episode } = Astro.props;
         <EpisodeArt num={episode.num} size={128} />
         <div>
           <div class="kicker">
-            <b>{epNum(episode.num)}</b>&ensp;·&ensp;{formatDateLong(episode.date)}&ensp;·&ensp;{formatDuration(episode.duration)}
+            <b>{epNum(episode.num)}</b>&ensp;·&ensp;{formatDateLong(episode.date)}&ensp;·&ensp;{formatDuration(episode.duration)}{episode.xUrl && episode.xViews && (
+              <Fragment>&ensp;·&ensp;<a class="x-views" href={episode.xUrl} rel="noopener">{formatViews(episode.xViews)} VIEWS ON X&nbsp;↗</a></Fragment>
+            )}
           </div>
           <h1>{episode.title}</h1>
         </div>
