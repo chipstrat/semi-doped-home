@@ -90,6 +90,28 @@ function text(v: unknown): string {
   return String(v);
 }
 
+/** Buzzsprout show notes carry bare URLs as plain text (the sponsor link,
+ * the follow links). Wrap them in anchors. Splitting on tags keeps attribute
+ * URLs untouched, and the inAnchor flag skips text already inside an <a>. */
+function linkify(html: string): string {
+  let inAnchor = false;
+  return html
+    .split(/(<[^>]+>)/)
+    .map((seg) => {
+      if (seg.startsWith('<')) {
+        if (/^<a[\s>]/i.test(seg)) inAnchor = true;
+        else if (/^<\/a>/i.test(seg)) inAnchor = false;
+        return seg;
+      }
+      if (inAnchor) return seg;
+      return seg.replace(
+        /https?:\/\/[^\s<]*[^\s<.,)]/g,
+        (u) => `<a href="${u}" rel="noopener">${u}</a>`,
+      );
+    })
+    .join('');
+}
+
 /** Normalize a title for episode↔video matching. */
 function normTitle(s: string): string {
   return s
@@ -160,7 +182,7 @@ export async function getEpisodes(): Promise<Episode[]> {
       title,
       slug,
       summary: text(item['itunes:summary']),
-      notesHtml: text(item.description),
+      notesHtml: linkify(text(item.description)),
       mp3,
       date: new Date(text(item.pubDate)),
       duration: Number(text(item['itunes:duration'])) || 0,
