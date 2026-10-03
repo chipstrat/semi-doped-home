@@ -1,0 +1,114 @@
+---
+// Privacy policy for DeepHearth, an iOS app that collects no data. Hosted
+// here because App Store Connect requires a public privacy policy URL for
+// every submission, including apps with nothing to disclose. Standalone and
+// noindex: it is a legal page for Apple's reviewer, not site content.
+import Base from '../../layouts/Base.astro';
+import WaferMark from '../../components/WaferMark.astro';
+
+const APP = 'DeepHearth';
+const CONTACT = 'austin@semidoped.com';
+const EFFECTIVE = 'October 3, 2026';
+---
+<Base
+  title={`${APP} Privacy Policy`}
+  description={`${APP} does not collect, store, or share any personal data.`}
+  noindex={true}
+>
+  <main class="policy">
+    <div class="wrap">
+      <a class="home-link" href="/">
+        <WaferMark size={28} />
+        <span class="wm"><span class="s">SEMI </span><span class="d">DOPED</span></span>
+      </a>
+
+      <div class="kicker">PRIVACY POLICY</div>
+      <h1>{APP}</h1>
+      <p class="meta">Effective {EFFECTIVE}</p>
+
+      <p class="lede">{APP} does not collect, store, transmit, or share any personal data. There is nothing to opt out of, because nothing is gathered.</p>
+
+      <h2>Data collection</h2>
+      <p>{APP} does not collect any information about you or your device. It does not ask for your name, email address, location, contacts, photos, or any other personal information, and it does not generate identifiers to track you.</p>
+
+      <h2>Analytics and tracking</h2>
+      <p>{APP} contains no analytics, advertising, crash-reporting, or tracking software of any kind, first-party or third-party. It does not use cookies or similar technologies.</p>
+
+      <h2>Network access</h2>
+      <p>{APP} does not send any data to us or to anyone else. Anything you create or change in the app stays on your device, under your control, and is removed when you delete the app.</p>
+
+      <h2>Third parties</h2>
+      <p>Because no data is collected, no data is shared with, sold to, or processed by any third party.</p>
+
+      <h2>Children</h2>
+      <p>{APP} does not knowingly collect information from anyone, including children under 13. Since it collects no data at all, it is suitable for users of any age in this respect.</p>
+
+      <h2>Changes to this policy</h2>
+      <p>If a future version of {APP} ever begins collecting data, this policy will be updated before that version is released, and the effective date above will change.</p>
+
+      <h2>Contact</h2>
+      <p>Questions about this policy can be sent to <a href={`mailto:${CONTACT}`}>{CONTACT}</a>.</p>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .policy {
+    padding: 3rem 0 5rem;
+  }
+  .policy .wrap {
+    max-width: 680px;
+  }
+  .home-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    text-decoration: none;
+    margin-bottom: 2.5rem;
+  }
+  .wm {
+    font-family: var(--font-display, 'Oxanium', sans-serif);
+    font-weight: 700;
+    letter-spacing: .12em;
+    font-size: .95rem;
+  }
+  .wm .d { color: var(--accent, #E96822); }
+  .kicker {
+    font-family: var(--font-mono, 'IBM Plex Mono', monospace);
+    font-size: .75rem;
+    letter-spacing: .14em;
+    color: var(--accent, #E96822);
+    margin-bottom: .5rem;
+  }
+  h1 {
+    font-family: var(--font-display, 'Oxanium', sans-serif);
+    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 2.75rem);
+    letter-spacing: .01em;
+    margin: 0 0 .35rem;
+  }
+  .meta {
+    font-family: var(--font-mono, 'IBM Plex Mono', monospace);
+    font-size: .8rem;
+    opacity: .7;
+    margin: 0 0 2rem;
+  }
+  .lede {
+    font-size: 1.15rem;
+    line-height: 1.55;
+    margin-bottom: 2rem;
+  }
+  h2 {
+    font-family: var(--font-display, 'Oxanium', sans-serif);
+    font-weight: 600;
+    font-size: 1.15rem;
+    margin: 2rem 0 .5rem;
+  }
+  p {
+    line-height: 1.65;
+    margin: 0 0 1rem;
+  }
+  a {
+    color: var(--accent, #E96822);
+  }
+</style>
