@@ -1,0 +1,107 @@
+---
+// Support page for DeepHearth. App Store Connect requires a public support
+// URL alongside the privacy policy. No email address on this page by request;
+// the contact route is an X direct message. Standalone and noindex, like the
+// privacy page beside it.
+import Base from '../../layouts/Base.astro';
+import WaferMark from '../../components/WaferMark.astro';
+
+const APP = 'DeepHearth';
+const X_HANDLE = 'semidoped';
+---
+<Base
+  title={`${APP} Support`}
+  description={`Help and support for ${APP}.`}
+  noindex={true}
+>
+  <main class="support">
+    <div class="wrap">
+      <a class="home-link" href="/">
+        <WaferMark size={28} />
+        <span class="wm"><span class="s">SEMI </span><span class="d">DOPED</span></span>
+      </a>
+
+      <div class="kicker">SUPPORT</div>
+      <h1>{APP}</h1>
+
+      <p class="lede">{APP} is a small, self-contained app. It has no account, no sign-in, and keeps nothing on a server, so most problems are fixed on the device itself.</p>
+
+      <h2>Common fixes</h2>
+      <ul>
+        <li><b>The app won't open or freezes.</b> Close it fully by swiping it away in the app switcher, then open it again. If that doesn't help, restart the device.</li>
+        <li><b>Something looks wrong after an update.</b> Make sure you are on the latest version in the App Store, then force-close and reopen the app.</li>
+        <li><b>Starting over.</b> Deleting and reinstalling the app returns it to a clean state. {APP} stores nothing outside the device, so there is no account or cloud data to clean up.</li>
+      </ul>
+
+      <h2>Privacy</h2>
+      <p>{APP} collects no personal data and sends nothing off the device. The full policy is at <a href="/deephearth/privacy/">semidoped.com/deephearth/privacy</a>.</p>
+
+      <h2>Get in touch</h2>
+      <p>For a bug report, a question, or a feature request, send a direct message to <a href={`https://x.com/${X_HANDLE}`} rel="noopener">@{X_HANDLE}</a> on X. Include your device model, iOS version, and what you were doing when the problem happened. We read every message and reply as quickly as we can.</p>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .support {
+    padding: 3rem 0 5rem;
+  }
+  .support .wrap {
+    max-width: 680px;
+  }
+  .home-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    text-decoration: none;
+    margin-bottom: 2.5rem;
+  }
+  .wm {
+    font-family: var(--font-display, 'Oxanium', sans-serif);
+    font-weight: 700;
+    letter-spacing: .12em;
+    font-size: .95rem;
+  }
+  .wm .d { color: var(--accent, #E96822); }
+  .kicker {
+    font-family: var(--font-mono, 'IBM Plex Mono', monospace);
+    font-size: .75rem;
+    letter-spacing: .14em;
+    color: var(--accent, #E96822);
+    margin-bottom: .5rem;
+  }
+  h1 {
+    font-family: var(--font-display, 'Oxanium', sans-serif);
+    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 2.75rem);
+    letter-spacing: .01em;
+    margin: 0 0 1.5rem;
+  }
+  .lede {
+    font-size: 1.15rem;
+    line-height: 1.55;
+    margin-bottom: 2rem;
+  }
+  h2 {
+    font-family: var(--font-display, 'Oxanium', sans-serif);
+    font-weight: 600;
+    font-size: 1.15rem;
+    margin: 2rem 0 .5rem;
+  }
+  p, li {
+    line-height: 1.65;
+  }
+  p {
+    margin: 0 0 1rem;
+  }
+  ul {
+    padding-left: 1.2rem;
+    margin: 0 0 1rem;
+  }
+  li {
+    margin-bottom: .75rem;
+  }
+  a {
+    color: var(--accent, #E96822);
+  }
+</style>
