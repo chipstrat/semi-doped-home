@@ -7,7 +7,14 @@ import Base from '../../layouts/Base.astro';
 import WaferMark from '../../components/WaferMark.astro';
 
 const APP = 'DeepHearth';
+// Formsubmit relays the POST to the support mailbox. No account: the first
+// submission triggers a one-time activation email to that inbox, and nothing
+// is delivered until the link in it is clicked. After activation the address
+// can be swapped for the hashed endpoint Formsubmit issues, which keeps the
+// mailbox out of the page source.
 const SUPPORT_EMAIL = 'glitchzoid@gmail.com';
+const FORM_ACTION = `https://formsubmit.co/${SUPPORT_EMAIL}`;
+const NEXT_URL = 'https://semidoped.com/deephearth/support/?sent=1';
 ---
 <Base
   title={`${APP} Support`}
@@ -37,10 +44,44 @@ const SUPPORT_EMAIL = 'glitchzoid@gmail.com';
       <p>{APP} collects no personal data and sends nothing off the device. The full policy is at <a href="/deephearth/privacy/">semidoped.com/deephearth/privacy</a>.</p>
 
       <h2>Get in touch</h2>
-      <p>For a bug report, a question, or a feature request, email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>. Include your device model, iOS version, and what you were doing when the problem happened. We read every message and reply as quickly as we can.</p>
+      <p>For a bug report, a question, or a feature request, use the form below. Include your device model, iOS version, and what you were doing when the problem happened. We read every message and reply as quickly as we can.</p>
+
+      <p class="sent" id="sent" hidden>Thanks, your message is on its way. We'll reply to the address you gave.</p>
+
+      <form class="contact" action={FORM_ACTION} method="POST">
+        <input type="hidden" name="_subject" value={`${APP} support request`} />
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_next" value={NEXT_URL} />
+        <!-- Honeypot: hidden from people, filled by bots, dropped by the relay. -->
+        <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
+
+        <label>
+          <span>Your email</span>
+          <input type="email" name="email" required autocomplete="email" placeholder="So we can reply" />
+        </label>
+        <label>
+          <span>Device and iOS version</span>
+          <input type="text" name="device" placeholder="e.g. iPhone 16 Pro, iOS 19.1" />
+        </label>
+        <label>
+          <span>What happened</span>
+          <textarea name="message" rows="6" required placeholder="What you were doing, what you expected, and what the app did instead."></textarea>
+        </label>
+        <button type="submit">Send</button>
+      </form>
     </div>
   </main>
 </Base>
+
+<script>
+  // The relay redirects back here with ?sent=1 after a successful submission.
+  if (new URLSearchParams(location.search).get('sent') === '1') {
+    const el = document.getElementById('sent');
+    if (el) { el.hidden = false; el.scrollIntoView({ block: 'center' }); }
+    history.replaceState(null, '', location.pathname);
+  }
+</script>
 
 <style>
   .support {
@@ -103,5 +144,70 @@ const SUPPORT_EMAIL = 'glitchzoid@gmail.com';
   }
   a {
     color: var(--accent, #E96822);
+  }
+  .contact {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+  .contact label {
+    display: grid;
+    gap: .35rem;
+  }
+  .contact label span {
+    font-family: var(--font-mono, 'IBM Plex Mono', monospace);
+    font-size: .75rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    opacity: .75;
+  }
+  .contact input,
+  .contact textarea {
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+    border-radius: 6px;
+    padding: .65rem .8rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .contact input:focus,
+  .contact textarea:focus {
+    outline: none;
+    border-color: var(--accent, #E96822);
+  }
+  .contact textarea {
+    resize: vertical;
+  }
+  .contact button {
+    justify-self: start;
+    font-family: var(--font-display, 'Oxanium', sans-serif);
+    font-weight: 700;
+    letter-spacing: .06em;
+    font-size: .95rem;
+    color: #fff;
+    background: var(--accent, #E96822);
+    border: none;
+    border-radius: 999px;
+    padding: .7rem 1.6rem;
+    cursor: pointer;
+    transition: filter .2s ease;
+  }
+  .contact button:hover {
+    filter: brightness(1.08);
+  }
+  .hp {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+  .sent {
+    border: 1px solid var(--accent, #E96822);
+    border-radius: 6px;
+    padding: .8rem 1rem;
+    margin: 1rem 0 0;
   }
 </style>
