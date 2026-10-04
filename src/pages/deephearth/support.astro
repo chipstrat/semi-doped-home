@@ -1,13 +1,13 @@
 ---
 // Support page for DeepHearth. App Store Connect requires a public support
-// URL alongside the privacy policy. No email address on this page by request;
-// the contact route is an X direct message. Standalone and noindex, like the
-// privacy page beside it.
+// URL alongside the privacy policy. Contact goes to a dedicated support
+// mailbox, not a personal address. Standalone and noindex, like the privacy
+// page beside it.
 import Base from '../../layouts/Base.astro';
 import WaferMark from '../../components/WaferMark.astro';
 
 const APP = 'DeepHearth';
-const X_HANDLE = 'semidoped';
+const SUPPORT_EMAIL = 'glitchzoid@gmail.com';
 ---
 <Base
   title={`${APP} Support`}
@@ -37,7 +37,7 @@ const X_HANDLE = 'semidoped';
       <p>{APP} collects no personal data and sends nothing off the device. The full policy is at <a href="/deephearth/privacy/">semidoped.com/deephearth/privacy</a>.</p>
 
       <h2>Get in touch</h2>
-      <p>For a bug report, a question, or a feature request, send a direct message to <a href={`https://x.com/${X_HANDLE}`} rel="noopener">@{X_HANDLE}</a> on X. Include your device model, iOS version, and what you were doing when the problem happened. We read every message and reply as quickly as we can.</p>
+      <p>For a bug report, a question, or a feature request, email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>. Include your device model, iOS version, and what you were doing when the problem happened. We read every message and reply as quickly as we can.</p>
     </div>
   </main>
 </Base>
