@@ -5,7 +5,7 @@ import Platforms from '../../components/Platforms.astro';
 import EpisodeArt from '../../components/EpisodeArt.astro';
 import YouTubeEmbed from '../../components/YouTubeEmbed.astro';
 import DailySignup from '../../components/DailySignup.astro';
-import { getEpisodes, formatDateLong, formatDuration, formatViews, epNum, type Episode } from '../../lib/feed';
+import { getEpisodes, formatDateLong, formatDuration, formatViews, youtubeUrl, epNum, type Episode } from '../../lib/feed';
 
 export async function getStaticPaths() {
   const episodes = await getEpisodes();
@@ -33,7 +33,9 @@ const { episode } = Astro.props;
         <div>
           <div class="kicker">
             <b>{epNum(episode.num)}</b>&ensp;·&ensp;{formatDateLong(episode.date)}&ensp;·&ensp;{formatDuration(episode.duration)}{episode.xUrl && episode.xViews && (
-              <Fragment>&ensp;·&ensp;<a class="x-views" href={episode.xUrl} rel="noopener">{formatViews(episode.xViews)} VIEWS ON X&nbsp;↗</a></Fragment>
+              <Fragment>&ensp;·&ensp;<a class="views-link" href={episode.xUrl} rel="noopener">{formatViews(episode.xViews)} VIEWS ON X&nbsp;↗</a></Fragment>
+            )}{episode.videoId && episode.ytViews && (
+              <Fragment>&ensp;·&ensp;<a class="views-link" href={youtubeUrl(episode.videoId)} rel="noopener">{formatViews(episode.ytViews)} VIEWS ON YOUTUBE&nbsp;↗</a></Fragment>
             )}
           </div>
           <h1>{episode.title}</h1>

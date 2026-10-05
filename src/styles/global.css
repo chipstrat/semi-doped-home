@@ -81,14 +81,15 @@ h1, h2, h3 {
   color: var(--muted);
 }
 
-/* Announcement-post view count, linking out to the post on X. */
-.x-views {
+/* Per-episode view counts, linking out to the post on X and the video on
+   YouTube. */
+.views-link {
   color: var(--muted);
   text-decoration: none;
   white-space: nowrap;
   transition: color 0.2s ease;
 }
-.x-views:hover { color: var(--accent); }
+.views-link:hover { color: var(--accent); }
 
 .btn {
   display: inline-flex;

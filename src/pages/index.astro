@@ -5,7 +5,7 @@ import Platforms from '../components/Platforms.astro';
 import EpisodeRow from '../components/EpisodeRow.astro';
 import YouTubeEmbed from '../components/YouTubeEmbed.astro';
 import WaferMark from '../components/WaferMark.astro';
-import { getEpisodes, formatDateLong, formatDuration, formatViews, epNum } from '../lib/feed';
+import { getEpisodes, formatDateLong, formatDuration, formatViews, youtubeUrl, epNum } from '../lib/feed';
 import { getLatestDaily, formatDate } from '../lib/feeds';
 import { QUOTES } from '../data/stats';
 import { LINKS } from '../lib/links';
@@ -27,7 +27,9 @@ const recent = rest.slice(0, 4);
       <div class="hero-copy">
         <div class="kicker">
           <b>{epNum(latest.num)}</b>&ensp;·&ensp;{formatDateLong(latest.date)}&ensp;·&ensp;{formatDuration(latest.duration)}{latest.xUrl && latest.xViews && (
-            <Fragment>&ensp;·&ensp;<a class="x-views" href={latest.xUrl} rel="noopener">{formatViews(latest.xViews)} VIEWS ON X&nbsp;↗</a></Fragment>
+            <Fragment>&ensp;·&ensp;<a class="views-link" href={latest.xUrl} rel="noopener">{formatViews(latest.xViews)} VIEWS ON X&nbsp;↗</a></Fragment>
+          )}{latest.videoId && latest.ytViews && (
+            <Fragment>&ensp;·&ensp;<a class="views-link" href={youtubeUrl(latest.videoId)} rel="noopener">{formatViews(latest.ytViews)} VIEWS ON YOUTUBE&nbsp;↗</a></Fragment>
           )}
         </div>
         <h1><a href={`/episodes/${latest.slug}/`}>{latest.title}</a></h1>

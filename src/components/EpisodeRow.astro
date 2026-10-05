@@ -1,6 +1,6 @@
 ---
 import EpisodeArt from './EpisodeArt.astro';
-import { formatDateShort, formatDuration, formatViews, type Episode } from '../lib/feed';
+import { formatDateShort, formatDuration, formatViews, youtubeUrl, type Episode } from '../lib/feed';
 
 interface Props {
   episode: Episode;
@@ -29,7 +29,10 @@ const { episode } = Astro.props;
   <span class="mono-meta meta-col">
     <span>{formatDateShort(episode.date)} · {formatDuration(episode.duration)}</span>
     {episode.xUrl && episode.xViews && (
-      <a class="x-views" href={episode.xUrl} rel="noopener">{formatViews(episode.xViews)} VIEWS ON X&nbsp;↗</a>
+      <a class="views-link" href={episode.xUrl} rel="noopener">{formatViews(episode.xViews)} VIEWS ON X&nbsp;↗</a>
+    )}
+    {episode.videoId && episode.ytViews && (
+      <a class="views-link" href={youtubeUrl(episode.videoId)} rel="noopener">{formatViews(episode.ytViews)} VIEWS ON YOUTUBE&nbsp;↗</a>
     )}
   </span>
 </article>

@@ -3,6 +3,7 @@ import youtubeMap from '../data/youtube.json';
 import transcriptMap from '../data/transcripts.json';
 import transcriptContent from '../data/transcript-content.json';
 import xStatsMap from '../data/x-stats.json';
+import ytStatsMap from '../data/yt-stats.json';
 
 const FEED_URL = 'https://feeds.buzzsprout.com/2570635.rss';
 // @SemiDoped uploads feed — used at build time to auto-map new episodes to
@@ -36,6 +37,12 @@ export interface Episode {
    *  the site (per-post, public on X itself; aggregates stay in the kit). */
   xUrl?: string;
   xViews?: number;
+  /** Public view count of the episode's YouTube video, from the same export. */
+  ytViews?: number;
+}
+
+export function youtubeUrl(videoId: string): string {
+  return `https://www.youtube.com/watch?v=${videoId}`;
 }
 
 export function formatDuration(seconds: number): string {
@@ -174,6 +181,9 @@ export async function getEpisodes(): Promise<Episode[]> {
       ogImage: videoId ? `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg` : undefined,
       xUrl: (xStatsMap as Record<string, { url: string; views: number }>)[idFromEnclosure(mp3)]?.url,
       xViews: (xStatsMap as Record<string, { url: string; views: number }>)[idFromEnclosure(mp3)]?.views,
+      ytViews: videoId
+        ? (ytStatsMap as Record<string, { views: number }>)[idFromEnclosure(mp3)]?.views
+        : undefined,
       transcriptUrl: transcripts[idFromEnclosure(mp3)],
       transcriptHtml: (transcriptContent as Record<string, { html: string }>)[
         idFromEnclosure(mp3)
